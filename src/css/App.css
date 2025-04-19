@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import "tailwindcss";
+@import "./assets/fonts/fonts.css";
+
+
+@theme {
+  --font-Clash: "ClashDisplay", "sans-serif";
+  --font-ClashVar: "ClashDisplayVariable", "sans-serif";
+  --color-Primary: "#3399FF";
+} */

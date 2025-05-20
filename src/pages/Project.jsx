@@ -3,7 +3,7 @@ import ShinyText from '../ReactBits/ShinyText'
 import todolist from '../assets/ToDoList.png'
 import StudentAbsention from '../assets/StudentAbsention.png'
 import ConselingGuidance from '../assets/ConselingGuidance.png'
-import { ArrowUpRight, Github } from 'lucide-react';
+import { ArrowUpRight, Github,} from 'lucide-react';
 
 const Project = () => {
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
@@ -43,6 +43,7 @@ const Project = () => {
       techStack: ["Laravel", "ReactJs"]
     },
   ];
+
   return (
     <section className='flex flex-col h-screen py-14 mb-36 gap-5 max-sm:mb-0 max-sm:py-4 max-sm:gap-3 max-sm:h-full'>
         <ShinyText text="My Project" disabled={false} speed={3} className='font-semibold text-2xl'/>
@@ -72,7 +73,7 @@ const Project = () => {
 function ProjectCard({ title, status, image, link, techStack, windowWidth }) {
   const [isHovered, setIsHovered] = useState(false);
   const isMobile = windowWidth < 768;
-  
+
   return (
     <div className="flex flex-col">
       <div className=" rounded-lg overflow-hidden mb-3 sm:mb-4 relative shadow-md cursor-pointer" 
@@ -80,11 +81,11 @@ function ProjectCard({ title, status, image, link, techStack, windowWidth }) {
       onMouseLeave={() => setIsHovered(false)}
       >
         <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-48 sm:h-56 md:h-64 object-cover"
+        src={image[0]} 
+        alt={title}
+        className="w-full h-48 sm:h-56 md:h-64 object-cover"
         />
-        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center text-white opacity-0 transition-opacity duration-300 ${isHovered || isMobile ? 'opacity-100' : ''} group-hover:opacity-100`}>
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center text-white opacity-0 transition-opacity duration-300 ${isHovered ? 'opacity-100' : ''} group-hover:opacity-100`}>
           <div className="flex flex-wrap justify-center gap-2 px-4">
             {techStack.map((tech, index) => (
               <span
@@ -97,7 +98,7 @@ function ProjectCard({ title, status, image, link, techStack, windowWidth }) {
           </div>
         </div>
       </div>
-      
+
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-lg sm:text-xl font-semibold">{title}</h2>

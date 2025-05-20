@@ -81,7 +81,7 @@ function ProjectCard({ title, status, image, link, techStack, windowWidth }) {
       onMouseLeave={() => setIsHovered(false)}
       >
         <img 
-        src={image[0]} 
+        src={image} 
         alt={title}
         className="w-full h-48 sm:h-56 md:h-64 object-cover"
         />

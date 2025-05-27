@@ -574,16 +574,36 @@ video {
   bottom: 2.5rem;
 }
 
+.bottom-5 {
+  bottom: 1.25rem;
+}
+
 .bottom-\[5px\] {
   bottom: 5px;
+}
+
+.left-5 {
+  left: 1.25rem;
 }
 
 .right-10 {
   right: 2.5rem;
 }
 
+.right-5 {
+  right: 1.25rem;
+}
+
 .right-\[70px\] {
   right: 70px;
+}
+
+.top-5 {
+  top: 1.25rem;
+}
+
+.z-50 {
+  z-index: 50;
 }
 
 .mx-12 {
@@ -645,6 +665,10 @@ video {
 
 .h-\[152px\] {
   height: 152px;
+}
+
+.h-full {
+  height: 100%;
 }
 
 .h-screen {

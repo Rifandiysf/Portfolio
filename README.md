@@ -2,8 +2,7 @@
 
 > A modern, responsive portfolio website built with React and Vite, featuring clean design and smooth animations to showcase projects and skills.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://rifandiysf.vercel.app/)
-
+[![Live Demo](https://github.com/user-attachments/assets/9b7f5c69-eab3-45ee-b355-730fefbd551c)](https://rifandiysf.vercel.app/)
 
 
 ## Features

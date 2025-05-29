@@ -1,7 +1,7 @@
 import React from 'react'
 import InfiniteScroll from '../components/InfiniteScroll'
 import { ArrowUpRightIcon } from 'lucide-react'
-import ShinyText from '../ReactBits/ShinyText'
+import ShinyText from '../utils/ShinyText'
 
 const Introduce = () => {
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import ShinyText from '../ReactBits/ShinyText'
+import ShinyText from '../utils/ShinyText'
 import todolist from '../assets/ToDoList.png'
 import StudentAbsention from '../assets/StudentAbsention.png'
 import ConselingGuidance from '../assets/ConselingGuidance.png'

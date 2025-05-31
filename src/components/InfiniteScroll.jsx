@@ -7,6 +7,7 @@ import React from "../assets/React.svg"
 import Mysql from "../assets/mysql.svg"
 import Git from "../assets/git.svg"
 import Figma from "../assets/figma.svg"
+import FadeContent from "../utils/FadeContent"
 
 export default function InfiniteScroll() {
     // Data logo teknologi
@@ -44,7 +45,7 @@ export default function InfiniteScroll() {
     const duplicatedLogos = [...techLogos, ...techLogos, ...techLogos];;
   
     return (
-      <div className="w-full mask-image">
+      <FadeContent blur={true} duration={2500} easing="ease-in-out" initialOpacity={0} className="w-full mask-image">
         <div className="w-full overflow-hidden">
             <div className="inline-flex items-center whitespace-nowrap animate-infiniteScroll">
                 {duplicatedLogos.map((logo, index) => (
@@ -57,6 +58,6 @@ export default function InfiniteScroll() {
                 ))}
             </div>
         </div>
-      </div>
+      </FadeContent>
     );
 }

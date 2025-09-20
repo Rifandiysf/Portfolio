@@ -66,7 +66,7 @@ function useElementWidth<T extends HTMLElement>(ref: React.RefObject<T | null>):
 
 // Default SVG separator
 const DefaultSeparatorSvg = () => (
-  <Sparkle size={64}/>
+  <Sparkle size={48} className='translate-y-2'/>
 );
 
 export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({

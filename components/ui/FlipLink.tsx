@@ -9,6 +9,7 @@ export default function FlipLink({ children, href, className, lineHeight = 0.75 
         <motion.a
             initial="initial"
             whileHover="hovered"
+            whileTap="clicked"
             href={href}
             className={cn("relative block overflow-hidden whitespace-nowrap text-lg font-black text-foreground uppercase", className)}
             style={{
@@ -25,6 +26,9 @@ export default function FlipLink({ children, href, className, lineHeight = 0.75 
                                 y: 0
                             },
                             hovered: {
+                                y: "-100%"
+                            },
+                            clicked: {
                                 y: "-100%"
                             }
                         }}
@@ -51,6 +55,9 @@ export default function FlipLink({ children, href, className, lineHeight = 0.75 
                             },
                             hovered: {
                                 y: 0
+                            },
+                            clicked: {
+                                y: "-100%"
                             }
                         }}
                         transition={{

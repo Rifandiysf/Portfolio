@@ -1,5 +1,4 @@
-import ScrollVelocity from "@/components/ScrollVelocity";
-import AboutSection, { techStack } from "@/components/section/AboutSection";
+import AboutSection from "@/components/section/AboutSection";
 import HeroSection from "@/components/section/HeroSection"
 
 const Home = () => {
@@ -11,12 +10,6 @@ const Home = () => {
         subline="BASED IN BANDUNG, INDONESIA"
       />
       <AboutSection />
-      <ScrollVelocity
-        texts={techStack}
-        velocity={50}
-        className="text-gray-800"
-        parallaxClassName="py-8 mask-x-from-80% mask-x-to-100%"
-      />
     </>
   );
 };

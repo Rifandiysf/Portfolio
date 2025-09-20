@@ -29,8 +29,7 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${bigShoulders.variable} antialiased relative min-h-screen`}
       >
-        {/* PERSISTENT NOISE BACKGROUND - Fixed position */}
-        <div className="fixed inset-0 w-full h-full z-0 pointer-events-none">
+        <section className="fixed inset-0 w-full h-full z-0 pointer-events-none">
           <Noise
             patternSize={250}
             patternScaleX={1}
@@ -38,11 +37,11 @@ export default function RootLayout({
             patternRefreshInterval={2}
             patternAlpha={15}
           />
-        </div>
+        </section>
 
-        <div className="relative z-50">
+        <section className="relative z-50">
           <Navbar />
-        </div>
+        </section>
 
         <main className="relative z-10">
           {children}

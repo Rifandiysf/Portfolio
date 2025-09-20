@@ -1,13 +1,6 @@
 "use client"
+import { NoiseProps } from '@/lib/types';
 import React, { useEffect, useRef, } from 'react';
-
-interface NoiseProps {
-  patternSize?: number;
-  patternScaleX?: number;
-  patternScaleY?: number;
-  patternRefreshInterval?: number;
-  patternAlpha?: number;
-}
 
 const Noise: React.FC<NoiseProps> = ({
   patternSize = 250,

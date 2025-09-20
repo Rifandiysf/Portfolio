@@ -1,14 +1,9 @@
 "use client";
 
+import { HeroSectionPros } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { motion, Variants } from "framer-motion";
 
-type HeroSectionPros = {
-    subtitle?: string;
-    title?: string;
-    subline?: string; 
-    className?: string;
-}
 
 const HeroSection = ({
     subtitle = "SUBTITLE",

@@ -1,18 +1,11 @@
-import React from "react";
-
-type Props = {
-    size?: number;
-    color?: string;
-    className?: string;
-    title?: string;
-};
+import { SparkleProps } from "@/lib/types";
 
 export function Sparkle({
     size = 24,
     color = "#2B00FF",
     className,
     title,
-}: Props) {
+}: SparkleProps) {
     return (
         <svg
             width={size}

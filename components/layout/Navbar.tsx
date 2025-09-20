@@ -15,6 +15,7 @@ const Navbar: React.FC = () => {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const [hoveredSocial, setHoveredSocial] = useState<string | null>(null);
     const [isScreenSize, setIsScreenSize] = useState("desktop");
+    const [isScrolled, setIsScrolled] = useState(false)
 
     // Check if mobile
     useEffect(() => {
@@ -38,6 +39,19 @@ const Navbar: React.FC = () => {
         return () => window.removeEventListener('resize', checkScreen);
     }, []);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 10) {
+                setIsScrolled(true)
+            } else {
+                setIsScrolled(false)
+            }
+        }
+
+        window.addEventListener("scroll", handleScroll)
+        return () => window.removeEventListener("scroll", handleScroll)
+    }, [])
+
     const getSidebarPosition = () => {
         switch (isScreenSize) {
             case 'mobile': return '0%';
@@ -57,16 +71,15 @@ const Navbar: React.FC = () => {
     ];
 
     const socialItems = [
-        { id: 'instagram', label: 'Instagram', href: '#' },
-        { id: 'github', label: 'GitHub', href: '#' },
-        { id: 'linkedin', label: 'LinkedIn', href: '#' },
+        { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/rifandiysf' },
+        { id: 'github', label: 'GitHub', href: 'https://github.com/Rifandiysf' },
+        { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/rifandiyusuf' },
     ];
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    // Variants untuk animasi sidebar dengan responsive positioning
     const sidebarVariants: Variants = {
         closed: {
             x: '100%',
@@ -77,7 +90,7 @@ const Navbar: React.FC = () => {
             }
         },
         open: {
-            x: getSidebarPosition(), // Mobile: 100%, Desktop: 65%
+            x: getSidebarPosition(),
             transition: {
                 type: 'tween',
                 duration: 0.5,
@@ -117,7 +130,6 @@ const Navbar: React.FC = () => {
         })
     };
 
-    // Variants untuk animasi pergantian text tombol
     const buttonTextVariants: Variants = {
         hidden: {
             y: 20,
@@ -141,7 +153,6 @@ const Navbar: React.FC = () => {
         }
     };
 
-    // Variants untuk animasi icon
     const iconVariants: Variants = {
         menu: {
             rotate: 0,
@@ -164,10 +175,10 @@ const Navbar: React.FC = () => {
     return (
         <>
             {/* HEADER COMPONENT */}
-            <header className="fixed top-0 left-0 w-full z-50">
+            <header className={`fixed top-0 left-0 w-full z-50 transition-colors  ${isScrolled ? "bg-background" : "bg-transparent"}`}>
                 <div className="flex items-center justify-between px-6 py-4">
 
-                    {/* LOGO - Bagian Kiri */}
+                    {/* LOGO */}
                     <div className="flex items-center space-x-2">
                         <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
                             <Image
@@ -182,7 +193,7 @@ const Navbar: React.FC = () => {
                         <h1 className="font-extrabold font-big-shoulders text-3xl text-foreground"><span className='font-[900]'>R</span>ysf</h1>
                     </div>
 
-                    {/* MENU BUTTON - Bagian Kanan */}
+                    {/* MENU BUTTON */}
                     <motion.button
                         onClick={toggleSidebar}
                         className="flex items-center space-x-2 px-4 py-2 text-foreground text-2xl rounded-lg cursor-pointer"
@@ -241,7 +252,7 @@ const Navbar: React.FC = () => {
 
                         {/* LAYER 2 - Secondary Color (Lighter Blue) */}
                         <motion.div
-                            className="absolute inset-0 bg-blue-500"
+                            className="absolute inset-0 bg-[#5227FF]"
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
@@ -256,9 +267,9 @@ const Navbar: React.FC = () => {
                             exit={{ x: '100%' }}
                             transition={{ duration: 0.5, delay: 0.2, ease: 'easeInOut' }}
                         >
-                            <div className="flex flex-col justify-center items-start h-full px-12">
+                            <div className="flex flex-col items-start h-full px-12 pt-24">
                                 {/* Menu Items */}
-                                <nav className="space-y-8">
+                                <nav className="space-y-2">
                                     {menuItems.map((item, index) => (
                                         <motion.div
                                             key={item.id}
@@ -294,7 +305,7 @@ const Navbar: React.FC = () => {
                                                     ))}
                                                 </div>
                                                 <motion.span
-                                                    className='text-2xl font-light text-blue-400'
+                                                    className='text-2xl font-light text-[#5227FF]'
                                                     initial={{ opacity: 0 }}
                                                     animate={{ opacity: 1 }}
                                                     transition={{ delay: index * 0.1 + 0.5 }}
@@ -306,9 +317,9 @@ const Navbar: React.FC = () => {
                                     ))}
                                 </nav>
 
-                                {/* Socials dengan hover effect */}
+                                {/* Socials */}
                                 <motion.div
-                                    className="absolute bottom-12 left-12"
+                                    className="absolute bottom-16 left-12"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.8 }}
@@ -319,6 +330,7 @@ const Navbar: React.FC = () => {
                                             <a
                                                 key={social.id}
                                                 href={social.href}
+                                                target='_blank'
                                                 className={`transition-colors duration-300 ${hoveredSocial && hoveredSocial !== social.id
                                                     ? 'text-gray-300' // Disabled color
                                                     : hoveredSocial === social.id
@@ -332,6 +344,17 @@ const Navbar: React.FC = () => {
                                             </a>
                                         ))}
                                     </div>
+                                </motion.div>
+
+                                <motion.div
+                                    className='absolute bottom-5 left-12'
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.9 }}
+                                >
+                                    <h4 className='text-sm font-semibold text-muted-foreground'>
+                                        Copyright © 2025 Rifandi Yusuf. All rights reserved.
+                                    </h4>
                                 </motion.div>
                             </div>
                         </motion.div>

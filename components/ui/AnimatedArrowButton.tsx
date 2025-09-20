@@ -2,11 +2,12 @@
 import { ArrowUpRight } from "lucide-react"
 import { motion, useAnimationControls } from "framer-motion";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const DURATION = 0.35;
 const STAGGER = 0.05;
 
-const AnimatedArrowButton = ({ title }: { title: string }) => {
+const AnimatedArrowButton = ({ title, className }: { title: string, className?: string }) => {
     const controls = useAnimationControls();
     const [isHovered, setIsHovered] = useState(false);
 
@@ -30,9 +31,9 @@ const AnimatedArrowButton = ({ title }: { title: string }) => {
                 clicked: { scale: 1.1 }, // kecil tambahan efek click
             }}
             transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            className="relative flex justify-center items-center gap-1 bg-primary w-44 px-4 py-1.5 font-bold text-lg rounded-full cursor-pointer overflow-hidden"
+            className={cn("relative flex justify-center items-center gap-1 bg-primary w-44 px-4 py-1.5 font-bold text-lg rounded-full cursor-pointer overflow-hidden", className)}
         >
-            <span className="text-background">{title}</span>
+            <span className="text-primary-foreground">{title}</span>
 
             <div className="relative w-6 h-6 overflow-hidden rounded-full">
                 <motion.span

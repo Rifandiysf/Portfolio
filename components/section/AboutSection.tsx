@@ -43,7 +43,7 @@ const AboutSection = () => {
                 velocity={50}
                 damping={70}
                 numCopies={2}
-                className="text-gray-800 font-big-shoulders"
+                className="text-foreground font-big-shoulders"
                 parallaxClassName="pt-8 mask-x-from-80% mask-x-to-100%"
             />
             <ScrollVelocity
@@ -51,7 +51,7 @@ const AboutSection = () => {
                 velocity={-50}
                 damping={70}
                 numCopies={2}
-                className="text-gray-800 font-big-shoulders"
+                className="text-foreground font-big-shoulders"
                 parallaxClassName="pb-8 mask-x-from-80% mask-x-to-100%"
             />
         </>

@@ -243,7 +243,7 @@ const Navbar: React.FC = () => {
 
                         {/* LAYER 1 - Primary Color (Blue) */}
                         <motion.div
-                            className="absolute inset-0 bg-blue-600"
+                            className="absolute inset-0 bg-primary"
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
@@ -261,7 +261,7 @@ const Navbar: React.FC = () => {
 
                         {/* LAYER 3 - White Background (Content Area) */}
                         <motion.div
-                            className="absolute -inset-0.5 bg-white"
+                            className="absolute -inset-0.5 bg-background"
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
@@ -332,10 +332,10 @@ const Navbar: React.FC = () => {
                                                 href={social.href}
                                                 target='_blank'
                                                 className={`transition-colors duration-300 ${hoveredSocial && hoveredSocial !== social.id
-                                                    ? 'text-gray-300' // Disabled color
+                                                    ? 'text-muted-foreground' // Disabled color
                                                     : hoveredSocial === social.id
                                                         ? 'text-primary'
-                                                        : 'text-gray-700 hover:text-primary'
+                                                        : 'text-foreground hover:text-primary'
                                                     }`}
                                                 onMouseEnter={() => setHoveredSocial(social.id)}
                                                 onMouseLeave={() => setHoveredSocial(null)}

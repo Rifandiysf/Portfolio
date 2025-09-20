@@ -10,42 +10,7 @@ import {
   useAnimationFrame
 } from 'motion/react';
 import { Sparkle } from './ui/Sparkle';
-
-interface VelocityMapping {
-  input: [number, number];
-  output: [number, number];
-}
-
-interface VelocityTextProps {
-  children: React.ReactNode;
-  baseVelocity: number;
-  scrollContainerRef?: React.RefObject<HTMLElement>;
-  className?: string;
-  damping?: number;
-  stiffness?: number;
-  numCopies?: number;
-  velocityMapping?: VelocityMapping;
-  parallaxClassName?: string;
-  scrollerClassName?: string;
-  parallaxStyle?: React.CSSProperties;
-  scrollerStyle?: React.CSSProperties;
-}
-
-interface ScrollVelocityProps {
-  scrollContainerRef?: React.RefObject<HTMLElement>;
-  texts: string[];
-  velocity?: number;
-  className?: string;
-  damping?: number;
-  stiffness?: number;
-  numCopies?: number;
-  velocityMapping?: VelocityMapping;
-  parallaxClassName?: string;
-  scrollerClassName?: string;
-  parallaxStyle?: React.CSSProperties;
-  scrollerStyle?: React.CSSProperties;
-  separatorSvg?: React.ReactNode;
-}
+import { ScrollVelocityProps, VelocityTextProps } from '@/lib/types';
 
 function useElementWidth<T extends HTMLElement>(ref: React.RefObject<T | null>): number {
   const [width, setWidth] = useState(0);
@@ -85,7 +50,6 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   separatorSvg = <DefaultSeparatorSvg />
 }) => {
   function VelocityText({
-    children,
     baseVelocity = velocity,
     scrollContainerRef,
     className = '',

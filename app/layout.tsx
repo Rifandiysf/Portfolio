@@ -27,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${manrope.variable} ${bigShoulders.variable} antialiased relative min-h-screen`}
+        className={`${manrope.variable} ${bigShoulders.variable} antialiased relative min-h-screen dark`}
       >
-        <section className="fixed inset-0 w-full h-full z-0 pointer-events-none">
+        <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none">
           <Noise
             patternSize={250}
             patternScaleX={1}

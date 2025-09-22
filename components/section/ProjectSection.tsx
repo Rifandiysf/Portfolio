@@ -29,7 +29,7 @@ const ProjectSection = () => {
                 <p className='font-light text-muted-foreground'>03</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
                 {projectItem.map((data, idx) => (
                     <div key={idx} className="flex flex-col gap-2">
                         <div 

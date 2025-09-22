@@ -26,7 +26,7 @@ const ExperienceSection = () => {
                 <p className='font-light text-muted-foreground'>04</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-5 min-sm:grid-cols-1">
+            <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
                 {experienceItem.map((data, idx) => (
                     <div key={idx} className="flex flex-col">
                         <div>

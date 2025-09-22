@@ -28,7 +28,7 @@ const AnimatedArrowButton = ({ title, className }: { title: string, className?: 
             variants={{
                 initial: { scale: 1 },
                 hovered: { scale: 1.05 },
-                clicked: { scale: 1.1 }, // kecil tambahan efek click
+                clicked: { scale: 1.1 },
             }}
             transition={{ type: "spring", stiffness: 300, damping: 15 }}
             className={cn("relative flex justify-center items-center gap-1 bg-primary w-44 px-4 py-1.5 font-bold text-lg rounded-full cursor-pointer overflow-hidden", className)}

@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
     const menuItems: MenuItem[] = [
         { id: '01', label: 'HOME', href: '/' },
         { id: '02', label: 'ABOUT', href: '/about' },
-        { id: '03', label: 'SERVICES', href: '/services' },
+        { id: '03', label: 'PROJECT', href: '/project' },
         { id: '04', label: 'CONTACT', href: '/contact' },
     ];
 

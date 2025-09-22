@@ -9,7 +9,7 @@ type ExperienceItemType = {
 }
 
 const experienceItem: ExperienceItemType[] = [
-    { role: "Junior Frontend Developer (Internship)", companyName: "Walden Global Service", date: "July 2025 — Present", description: "Frontend Developer intern for 5 months, developing a Leave Management System with Next.js, TypeScript, and Tailwind CSS. Focused on building responsive UIs, optimizing component structures, and enhancing usability, application performance, and the efficiency of leave request workflows across devices." },
+    { role: "Junior Frontend Developer (Internship)", companyName: "Walden Global Service", date: "July 2025 — Present", description: "Frontend Developer intern for 5 months through a school internship program, developing a Leave Management System with Next.js, TypeScript, and Tailwind CSS. Focused on building responsive UIs, optimizing component structures, and enhancing usability, application performance, and the efficiency of leave request workflows across devices." },
 ]
 
 const ExperienceSection = () => {
@@ -26,7 +26,7 @@ const ExperienceSection = () => {
                 <p className='font-light text-muted-foreground'>04</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid grid-cols-2 gap-5 min-sm:grid-cols-1">
                 {experienceItem.map((data, idx) => (
                     <div key={idx} className="flex flex-col">
                         <div>

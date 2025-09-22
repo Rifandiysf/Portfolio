@@ -66,7 +66,7 @@ const HeroSection = ({
                     return (
                         <span
                             key={wordIndex}
-                            className="text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] overflow-hidden"
+                            className="text-8xl md:text-9xl lg:text-[10rem] xl:text-[14rem] overflow-hidden"
                         >
                             {part.split("").map((char, charIndex) => (
                                 <motion.span

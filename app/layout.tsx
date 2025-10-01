@@ -1,4 +1,3 @@
-// layout.tsx
 import type { Metadata } from "next";
 import { Manrope, Big_Shoulders } from "next/font/google";
 import "./globals.css";

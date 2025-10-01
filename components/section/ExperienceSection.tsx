@@ -14,7 +14,7 @@ const experienceItem: ExperienceItemType[] = [
 
 const ExperienceSection = () => {
     return (
-        <section className='flex flex-col gap-16 my-24 px-48 w-full max-sm:px-16'>
+        <section className='flex flex-col gap-16 my-24 px-8 w-full'>
             <div className='flex gap-0.5 w-full'>
                 <FlipLink
                     href="#"

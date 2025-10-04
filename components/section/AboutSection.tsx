@@ -18,7 +18,7 @@ const AboutSection = () => {
             <section className='flex flex-col gap-16 my-24 px-48 w-full max-sm:px-16'>
                 <div className='flex gap-0.5 w-full'>
                     <FlipLink
-                        href="#"
+                        href="/about"
                         lineHeight={0.85}
                         className="text-primary text-3xl"
                     >

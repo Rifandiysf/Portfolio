@@ -1,16 +1,17 @@
 'use client'
-import AnimatedArrowButton from "../ui/AnimatedArrowButton"
+// import AnimatedArrowButton from "../ui/AnimatedArrowButton"
 import FlipLink from "../ui/FlipLink"
 
 type projectItemType = {
     title: string
     status: string[]
+    description: string
     image: string
 }
 
 const projectItem: projectItemType[] = [
-    { title: "Sibening", status: ["Web Development", "UI/UX Design"], image: "/sibening.png" },
-    { title: "Leave App", status: ["Web Development"], image: "/leave-app.png" },
+    { title: "Sibening", status: ["Web Development", "UI/UX Design"], description: "A school counseling application with features for psychological tests, consultations, attendance, and student data management.", image: "/sibening.png" },
+    { title: "Company Leave Apps", status: ["Web Development"], description: "An application to manage employee leave requests, approvals, and history digitally.", image: "/leave-app.png" },
 ]
 
 const ProjectSection = () => {
@@ -18,7 +19,7 @@ const ProjectSection = () => {
         <section className="flex flex-col gap-16 my-24 px-8 w-full">
             <div className='flex gap-0.5 w-full'>
                 <FlipLink
-                    href="#"
+                    href="/project"
                     lineHeight={0.85}
                     className="text-primary text-3xl"
                 >
@@ -42,6 +43,7 @@ const ProjectSection = () => {
                         <div className="flex justify-between items-center">
                             <div className="flex flex-col gap-2">
                                 <h2 className="font-big-shoulders font-[900] text-xl">{data.title}</h2>
+                                <h3 className="text-muted-foreground font-medium">{data.description}</h3>
                                 <div className="flex gap-2">
                                     <h3
                                         className="bg-secondary py-2 px-4 rounded-full text-sm font-medium"
@@ -62,9 +64,9 @@ const ProjectSection = () => {
                 ))}
             </div>
 
-            <div className="flex justify-center items-center">
+            {/* <div className="flex justify-center items-center">
                 <AnimatedArrowButton title="More Project" className="w-48" />
-            </div>
+            </div> */}
         </section>
     )
 }

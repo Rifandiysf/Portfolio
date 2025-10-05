@@ -15,7 +15,7 @@ const techStack = [
 const AboutSection = () => {
     return (
         <>
-            <section className='flex flex-col gap-16 my-24 px-48 w-full max-sm:px-16'>
+            <section className='flex flex-col gap-16 my-24 px-48 w-full max-sm:px-8'>
                 <div className='flex gap-0.5 w-full'>
                     <FlipLink
                         href="/about"
@@ -26,7 +26,7 @@ const AboutSection = () => {
                     </FlipLink>
                     <p className='font-light text-muted-foreground'>02</p>
                 </div>
-                <div className='grid grid-cols-2 justify-center items-start gap-20 max-sm:grid-cols-1'>
+                <div className='grid grid-cols-2 justify-center items-start gap-20 max-sm:grid-cols-1 max-sm:text-justify'>
                     <p className='font-semibold text-xl text-muted-foreground'>
                         My passion lies in the intersection of creativity and technology, focusing on Front-End Development and UI/UX Design to craft engaging and user-friendly digital experiences.
                     </p>

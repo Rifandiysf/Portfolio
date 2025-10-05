@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Plus, X } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface MenuItem {
     id: string;
@@ -179,7 +180,7 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center justify-between px-6 py-4">
 
                     {/* LOGO */}
-                    <div className="flex items-center space-x-2">
+                    <Link href='/' className="flex items-center space-x-2">
                         <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
                             <Image
                                 src={'/rifandiysf-logo.svg'}
@@ -191,7 +192,7 @@ const Navbar: React.FC = () => {
                             />
                         </div>
                         <h1 className="font-extrabold font-big-shoulders text-3xl text-foreground"><span className='font-[900]'>R</span>ysf</h1>
-                    </div>
+                    </Link>
 
                     {/* MENU BUTTON */}
                     <motion.button

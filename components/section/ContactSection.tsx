@@ -33,9 +33,9 @@ const ContactSection = () => {
                     </div>
                     <div>
                         <h4 className="text-xl font-bold">Sosials</h4>
-                        <a href="https://www.instagram.com/rifandiysf" target="_blank" className="font-medium mr-3.5 hover:underline">LinkedIn</a>
+                        <a href="https://www.instagram.com/rifandiysf" target="_blank" className="font-medium mr-3.5 hover:underline">Instagram</a>
                         <a href="https://github.com/Rifandiysf" target="_blank" className="font-medium mr-3.5 hover:underline">Github</a>
-                        <a href="https://www.linkedin.com/in/rifandiyusuf" target="_blank" className="font-medium hover:underline">Instagram</a>
+                        <a href="https://www.linkedin.com/in/rifandiyusuf" target="_blank" className="font-medium hover:underline">LinkedIn</a>
                     </div>
                 </div>
             </div>

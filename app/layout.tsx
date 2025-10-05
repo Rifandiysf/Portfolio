@@ -15,7 +15,7 @@ const bigShoulders = Big_Shoulders({
 });
 
 export const metadata: Metadata = {
-  title: "Rifandiysf | Portfolio",
+  title: "Rifandiysf - Portfolio",
 };
 
 export default function RootLayout({

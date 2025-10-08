@@ -1,6 +1,6 @@
 'use client'
 import ScrollVelocity from "../ScrollVelocity";
-import AnimatedArrowButton from "../ui/AnimatedArrowButton"
+// import AnimatedArrowButton from "../ui/AnimatedArrowButton"
 import FlipLink from "../ui/FlipLink"
 
 const techStack = [
@@ -34,7 +34,7 @@ const AboutSection = () => {
                         <p className="font-medium text-lg">
                             I am currently pursuing education in Software Development, where I have gained hands-on experience in modern web development practices. With a strong foundation in problem-solving and an eagerness to learn, I am ready to contribute as a Front-End Developer—bringing fresh ideas, dedication, and a drive to create impactful digital solutions.
                         </p>
-                        <AnimatedArrowButton title="Get Resume" />
+                        {/* <AnimatedArrowButton title="Get Resume" /> */}
                     </div>
                 </div>
             </section>

@@ -9,7 +9,7 @@ type ExperienceItemType = {
 }
 
 const experienceItem: ExperienceItemType[] = [
-    { role: "Junior Frontend Developer (Internship)", companyName: "PT. Walden Global Service", date: "July 2025 — Present", description: "Frontend Developer intern for 5 months through a school internship program, developing a Leave Management System with Next.js, TypeScript, and Tailwind CSS. Focused on building responsive UIs, optimizing component structures, and enhancing usability, application performance, and the efficiency of leave request workflows across devices." },
+    { role: "Junior Frontend Developer (Internship)", companyName: "PT. Walden Global Service", date: "July 2025 — November 2025", description: "Frontend Developer intern for 5 months through a school internship program, developing a Leave Management System with Next.js, TypeScript, and Tailwind CSS. Focused on building responsive UIs, optimizing component structures, and enhancing usability, application performance, and the efficiency of leave request workflows across devices." },
 ]
 
 const ExperienceSection = () => {

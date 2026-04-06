@@ -251,13 +251,22 @@ const Navbar: React.FC = () => {
                             transition={{ duration: 0.5, ease: 'easeInOut' }}
                         />
 
-                        {/* LAYER 2 - Secondary Color (Lighter Blue) */}
+                        {/* LAYER 1 - Primary Color (Blue) */}
                         <motion.div
-                            className="absolute inset-0 bg-[#5227FF]"
+                            className="absolute inset-0 bg-[#fa0a5a]"
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
                             transition={{ duration: 0.5, delay: 0.1, ease: 'easeInOut' }}
+                        />
+
+                        {/* LAYER 2 - Secondary Color (Lighter Blue) */}
+                        <motion.div
+                            className="absolute inset-0 bg-[#0afaaa]"
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ duration: 0.5, delay: 0.2, ease: 'easeInOut' }}
                         />
 
                         {/* LAYER 3 - White Background (Content Area) */}
@@ -266,7 +275,7 @@ const Navbar: React.FC = () => {
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
-                            transition={{ duration: 0.5, delay: 0.2, ease: 'easeInOut' }}
+                            transition={{ duration: 0.5, delay: 0.3, ease: 'easeInOut' }}
                         >
                             <div className="flex flex-col items-start h-full px-12 pt-24">
                                 {/* Menu Items */}

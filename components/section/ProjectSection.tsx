@@ -1,18 +1,8 @@
 'use client'
+import Link from "next/link"
 // import AnimatedArrowButton from "../ui/AnimatedArrowButton"
 import FlipLink from "../ui/FlipLink"
-
-type projectItemType = {
-    title: string
-    status: string[]
-    description: string
-    image: string
-}
-
-const projectItem: projectItemType[] = [
-    { title: "Sibening", status: ["Web Development", "UI/UX Design"], description: "A school counseling application with features for psychological tests, consultations, attendance, and student data management.", image: "/sibening.png" },
-    { title: "Company Leave Apps", status: ["Web Development"], description: "An application to manage employee leave requests, approvals, and history digitally.", image: "/leave-app.png" },
-]
+import { projectItems } from "@/lib/api"
 
 const ProjectSection = () => {
     return (
@@ -29,8 +19,8 @@ const ProjectSection = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
-                {projectItem.map((data, idx) => (
-                    <div key={idx} className="flex flex-col gap-2">
+                {projectItems.map((data, idx) => (
+                    <Link href={`/project/${data.slug}`} key={idx} className="flex flex-col gap-2">
                         <div
                             className="w-full rounded-lg bg-muted-foreground/60 aspect-[16/9]"
                             style={{
@@ -60,7 +50,7 @@ const ProjectSection = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
 

@@ -1,16 +1,6 @@
 'use client'
+import { experienceItem } from "@/lib/api"
 import FlipLink from "../ui/FlipLink"
-
-type ExperienceItemType = {
-    role: string
-    companyName: string
-    date: string
-    description: string
-}
-
-const experienceItem: ExperienceItemType[] = [
-    { role: "Junior Frontend Developer (Internship)", companyName: "PT. Walden Global Service", date: "July 2025 — November 2025", description: "Frontend Developer intern for 5 months through a school internship program, developing a Leave Management System with Next.js, TypeScript, and Tailwind CSS. Focused on building responsive UIs, optimizing component structures, and enhancing usability, application performance, and the efficiency of leave request workflows across devices." },
-]
 
 const ExperienceSection = () => {
     return (
@@ -26,7 +16,7 @@ const ExperienceSection = () => {
                 <p className='font-light text-muted-foreground'>04</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
+            <div className="grid grid-cols-1 gap-5 max-sm:grid-cols-1">
                 {experienceItem.map((data, idx) => (
                     <div key={idx} className="flex flex-col">
                         <div>

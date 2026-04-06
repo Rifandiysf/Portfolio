@@ -7,12 +7,15 @@ type Props = {
     params: { slug: string }
 }
 
-export default function ProjectDetailPage({ params }: Props) {
-    const project = projectItems.find((p) => p.slug === params.slug)
-    if (!project) notFound()
+export default async function ProjectDetailPage({ params }: Props) {
+    const { slug } = await params;
 
-    const currentIndex = projectItems.findIndex((p) => p.slug === params.slug)
-    const nextProject = projectItems[(currentIndex + 1) % projectItems.length]
+    const project = projectItems.find((p) => p.slug === slug);
+
+    if (!project) notFound();
+
+    const currentIndex = projectItems.findIndex((p) => p.slug === slug);
+    const nextProject = projectItems[(currentIndex + 1) % projectItems.length];
 
     return (
         <main className="min-h-screen px-8 py-20 max-w-5xl mx-auto">

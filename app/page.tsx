@@ -1,7 +1,5 @@
 import AboutSection from "@/components/section/AboutSection";
-import ContactSection from "@/components/section/ContactSection";
 import ExperienceSection from "@/components/section/ExperienceSection";
-import FooterSection from "@/components/section/FooterSection";
 import HeroSection from "@/components/section/HeroSection"
 import ProjectSection from "@/components/section/ProjectSection";
 
@@ -16,8 +14,6 @@ const Home = () => {
       <AboutSection />
       <ProjectSection />
       <ExperienceSection />
-      <ContactSection />
-      <FooterSection />
     </>
   );
 };

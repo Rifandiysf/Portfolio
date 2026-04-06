@@ -3,6 +3,8 @@ import { Manrope, Big_Shoulders } from "next/font/google";
 import "./globals.css";
 import Noise from "@/components/Noise";
 import Navbar from "../components/layout/Navbar";
+import ContactSection from "@/components/section/ContactSection";
+import FooterSection from "@/components/section/FooterSection";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -44,6 +46,8 @@ export default function RootLayout({
 
         <main className="relative z-10">
           {children}
+          <ContactSection />
+          <FooterSection />
         </main>
       </body>
     </html>

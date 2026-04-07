@@ -19,8 +19,6 @@ export default async function ProjectDetailPage({ params }: Props) {
 
     return (
         <main className="min-h-screen px-8 py-20 max-w-5xl mx-auto">
-
-            {/* Back button */}
             <Link
                 href="/#project"
                 className="inline-flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-widest font-medium hover:text-primary transition-colors mb-16"

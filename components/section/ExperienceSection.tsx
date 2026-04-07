@@ -7,7 +7,7 @@ const ExperienceSection = () => {
         <section className='flex flex-col gap-16 my-24 px-8 w-full'>
             <div className='flex gap-0.5 w-full'>
                 <FlipLink
-                    href="/experience"
+                    href="#"
                     lineHeight={0.85}
                     className="text-primary text-3xl"
                 >

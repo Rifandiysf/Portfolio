@@ -14,7 +14,7 @@ const ContactSection = () => {
                 <div
                     className="w-52 font-extrabold text-2xl max-sm:text-xl text-primary"
                 >
-                    <Link href={'#'} className="flex gap-2 items-center">
+                    <Link href={'/contact'} className="flex gap-2 items-center">
                         GET IN TOUCH <ArrowUpRight size={26} />
                     </Link>
                 </div>
@@ -23,7 +23,7 @@ const ContactSection = () => {
                 <div className="flex max-sm:flex-col gap-24 max-sm:gap-7 max-md:gap-7">
                     <div>
                         <h4 className="text-xl font-bold">Write to Us</h4>
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rifandiyusuf47@gmail.com&su=Hey Rifandi" target='_blank'>
+                        <a href="mailto:rifandiyusuf47@gmail.com" target='_blank'>
                             <p className="font-medium hover:underline">rifandiyusuf47@gmail.com</p>
                         </a>
                     </div>

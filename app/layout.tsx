@@ -5,6 +5,7 @@ import Noise from "@/components/Noise";
 import Navbar from "../components/layout/Navbar";
 import ContactSection from "@/components/section/ContactSection";
 import FooterSection from "@/components/section/FooterSection";
+import TransitionProvider from "@/lib/provider/TransitionProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -41,7 +42,9 @@ export default function RootLayout({
         </section>
 
         <section className="relative z-50">
-          <Navbar />
+          <TransitionProvider>
+            <Navbar />
+          </TransitionProvider>
         </section>
 
         <main className="relative z-10">

@@ -1,13 +1,30 @@
 'use client'
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import Preloader from "@/components/ui/Preloader"
+import ContactSection from "@/components/section/ContactSection"
+import FooterSection from "@/components/section/FooterSection"
+
+let hasPreloaded = false
 
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
-    const [done, setDone] = useState(false)
+    const [done, setDone] = useState(hasPreloaded)
+    const pathname = usePathname()
+
+    const hiddenRoutes = ["/contact"]
+    const isHidden = hiddenRoutes.includes(pathname)
 
     return (
         <>
-            <Preloader onComplete={() => setDone(true)} />
+            {!hasPreloaded && (
+                <Preloader
+                    onComplete={() => {
+                        hasPreloaded = true
+                        setDone(true)
+                    }}
+                />
+            )}
+
             <div
                 style={{
                     opacity: done ? 1 : 0,
@@ -16,6 +33,9 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
                 }}
             >
                 {children}
+
+                {!isHidden && <ContactSection />}
+                <FooterSection />
             </div>
         </>
     )

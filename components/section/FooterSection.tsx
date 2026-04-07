@@ -54,11 +54,9 @@ const FooterSection = () => {
 
     return (
         <footer className="w-full bg-foreground flex flex-col overflow-hidden">
-
-            {/* Top row */}
             <div className="flex justify-between items-start px-8 pt-12 pb-10 border-b border-background/10 max-sm:flex-col max-sm:gap-10">
 
-                {/* Left — nav */}
+                {/* nav */}
                 <div className="flex flex-col gap-3">
                     <span className="text-[11px] uppercase tracking-[0.14em] text-background/30 font-medium mb-2">
                         Navigation
@@ -74,7 +72,7 @@ const FooterSection = () => {
                     ))}
                 </div>
 
-                {/* Center — socials */}
+                {/* socials */}
                 <div className="flex flex-col gap-3">
                     <span className="text-[11px] uppercase tracking-[0.14em] text-background/30 font-medium mb-2">
                         Social
@@ -96,7 +94,7 @@ const FooterSection = () => {
                     ))}
                 </div>
 
-                {/* Right — info */}
+                {/* info */}
                 <div className="flex flex-col items-end gap-3 max-sm:items-start">
                     <span className="text-[11px] uppercase tracking-[0.14em] text-background/30 font-medium mb-2">
                         Info

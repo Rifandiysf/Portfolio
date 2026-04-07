@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react"
 
 const ProjectsPage = () => {
     return (
-        <main className="px-8 pt-20 pb-32 max-w-5xl mx-auto">
+        <main className="px-8 pt-20 pb-32 max-w-6xl mx-auto">
 
             {/* Page Title */}
             <h1

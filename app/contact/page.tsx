@@ -43,7 +43,7 @@ const ContactPage = () => {
     }
 
     return (
-        <main className="px-8 pt-20 pb-32 max-w-5xl mx-auto">
+        <main className="px-8 pt-20 pb-32 max-w-6xl mx-auto">
 
             <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground/50 font-medium mb-5">
                 Let&apos;s work together

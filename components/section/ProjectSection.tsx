@@ -6,7 +6,7 @@ import { projectItems } from "@/lib/api"
 
 const ProjectSection = () => {
     return (
-        <section className="flex flex-col gap-16 my-24 px-8 w-full">
+        <section className="flex flex-col gap-16 my-24 px-8 w-full max-w-6xl mx-auto">
             <div className='flex gap-0.5 w-full'>
                 <FlipLink
                     href="/project"

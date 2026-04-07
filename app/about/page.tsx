@@ -12,7 +12,7 @@ const AboutPage = () => {
         <main className="min-h-screen">
 
             {/* Hero */}
-            <section className="px-8 pt-20 pb-0 max-w-5xl mx-auto">
+            <section className="px-8 pt-20 pb-0 max-w-6xl mx-auto">
                 <div className="grid grid-cols-2 gap-10 mb-20 items-start max-sm:grid-cols-1">
 
                     {/* Year block */}

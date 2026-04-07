@@ -5,7 +5,7 @@ import Link from "next/link"
 
 const ContactSection = () => {
     return (
-        <section className="flex flex-col gap-20 w-full px-8 py-16">
+        <section className="flex flex-col gap-20 w-full px-8 py-16 max-w-6xl mx-auto">
             <div className="flex flex-col gap-5">
                 <div className="">
                     <h2 className="font-big-shoulders font-[900] text-9xl max-sm:text-7xl">LET`S WORK</h2>

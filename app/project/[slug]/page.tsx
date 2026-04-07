@@ -19,7 +19,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     const nextProject = projectItems[(currentIndex + 1) % projectItems.length];
 
     return (
-        <main className="min-h-screen px-8 py-20 max-w-5xl mx-auto">
+        <main className="min-h-screen px-8 py-20 max-w-6xl mx-auto">
             <BackButton/>
 
             {/* Hero image */}

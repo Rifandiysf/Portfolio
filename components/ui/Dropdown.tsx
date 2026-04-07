@@ -27,7 +27,7 @@ export default function Dropdown({
                 onClick={() => setOpen(!open)}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.1em] font-medium border border-border/60 px-5 py-2.5 rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+                className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.1em] font-medium border border-border/60 px-5 py-2.5 rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary cursor-pointer transition-all duration-200"
             >
                 {title} <ArrowUpRight size={13} />
             </motion.button>

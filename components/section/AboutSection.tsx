@@ -1,44 +1,111 @@
 'use client'
-import ScrollVelocity from "../ScrollVelocity";
-// import AnimatedArrowButton from "../ui/AnimatedArrowButton"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import ScrollVelocity from "../ScrollVelocity"
 import FlipLink from "../ui/FlipLink"
+import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
+import Dropdown from "../ui/Dropdown"
 
 const techStack = [
-    'TYPESCRIPT',
-    'JAVASCRIPT',
-    'TAILWIND CSS',
-    'NEXT JS',
-    'REACT',
-    'FIGMA'
-];
+    'TYPESCRIPT', 'JAVASCRIPT', 'TAILWIND CSS',
+    'NEXT JS', 'REACT', 'FIGMA'
+]
 
 const AboutSection = () => {
+    const ref = useRef(null)
+    const inView = useInView(ref, { once: true, margin: "-100px" })
+
     return (
         <>
-            <section className='flex flex-col gap-16 my-24 px-48 w-full max-sm:px-8'>
-                <div className='flex gap-0.5 w-full'>
-                    <FlipLink
-                        href="/about"
-                        lineHeight={0.85}
-                        className="text-primary text-3xl"
-                    >
+            <section ref={ref} className="flex flex-col gap-14 my-24 px-8 w-full max-w-6xl mx-auto">
+
+                {/* Header */}
+                <div className="flex items-baseline gap-1.5">
+                    <FlipLink href="/about" lineHeight={0.85} className="text-primary text-3xl">
                         About
                     </FlipLink>
-                    <p className='font-light text-muted-foreground'>02</p>
+                    <p className="font-light text-muted-foreground text-sm">02</p>
                 </div>
-                <div className='grid grid-cols-2 justify-center items-start gap-20 max-sm:grid-cols-1 max-sm:text-justify'>
-                    <p className='font-semibold text-xl text-muted-foreground'>
-                        My passion lies in the intersection of creativity and technology, focusing on Front-End Development and UI/UX Design to craft engaging and user-friendly digital experiences.
-                    </p>
-                    <div className="flex flex-col gap-5">
-                        <p className="font-medium text-lg">
-                            I am currently pursuing education in Software Development, where I have gained hands-on experience in modern web development practices. With a strong foundation in problem-solving and an eagerness to learn, I am ready to contribute as a Front-End Developer—bringing fresh ideas, dedication, and a drive to create impactful digital solutions.
+
+                <div className="grid grid-cols-2 gap-16 items-start max-sm:grid-cols-1 max-sm:gap-10">
+                    {/* tagline */}
+                    <motion.p
+                        className="font-medium text-xl leading-relaxed text-muted-foreground"
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={inView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.7, ease: "easeOut" }}
+                    >
+                        Fresh graduate passionate about the intersection of{" "}
+                        <span className="text-primary font-semibold">creativity & technology</span>
+                        {" "}— crafting engaging, user-friendly digital experiences that work and feel good.
+                    </motion.p>
+
+                    {/* bio and links */}
+                    <motion.div
+                        className="flex flex-col gap-6"
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={inView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.12 }}
+                    >
+                        <p className="text-base leading-[1.85] text-muted-foreground">
+                            Recently graduated from a vocational high school in Software Development.
+                            I&apos;ve already shipped real projects — from a real-time counseling system
+                            for my school, to a production leave management app during a 5-month internship
+                            at PT. Walden Global Service.
                         </p>
-                        {/* <AnimatedArrowButton title="Get Resume" /> */}
-                    </div>
-                </div>
-            </section>
-            <ScrollVelocity
+
+                        <div className="flex gap-3 flex-wrap pt-2">
+                            <div className="relative mt-8 w-fit">
+                                <Link
+                                    href="/about"
+                                    className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.1em] font-medium border border-border/60 px-5 py-2.5 rounded-full hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-200"
+                                >
+                                    More about me <ArrowUpRight size={12} />
+                                </Link>
+                            </div>
+                            <Dropdown
+                                title="Get Resume"
+                                options={[
+                                    { label: "English", href: "/pdf/Rifandi-Yusuf-Resume-(English).pdf", download: true },
+                                    { label: "Indonesia", href: "/pdf/Rifandi-Yusuf-Resume-(Indonesia).pdf", download: true },
+                                ]}
+                            />
+                        </div>
+                    </motion.div>
+                </div >
+
+                <motion.div
+                    className="grid grid-cols-3 gap-0 border-t border-border/40 pt-10 max-sm:grid-cols-1"
+                    initial={{ opacity: 0, y: 20 }
+                    }
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.24 }}
+                >
+                    {
+                        [
+                            { num: "2+", label: "Projects Shipped" },
+                            { num: "5mo", label: "Internship Experience" },
+                            { num: "6+", label: "Tech Stack Mastered" },
+                        ].map((stat, i) => (
+                            <div
+                                key={i}
+                                className="flex flex-col gap-1 pr-10 max-sm:py-6 max-sm:border-b max-sm:border-border/40 max-sm:pr-0 last:max-sm:border-0"
+                            >
+                                <span className="font-big-shoulders font-[900] text-4xl text-primary tracking-tight">
+                                    {stat.num}
+                                </span>
+                                <span className="text-[12px] uppercase tracking-[0.1em] text-muted-foreground/60 font-medium">
+                                    {stat.label}
+                                </span>
+                            </div>
+                        ))
+                    }
+                </motion.div>
+            </section >
+
+            {/* Scroll velocity */}
+            < ScrollVelocity
                 texts={techStack}
                 velocity={50}
                 damping={70}

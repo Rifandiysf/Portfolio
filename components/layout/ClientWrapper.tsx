@@ -13,7 +13,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
     const pathname = usePathname()
     const segments = useSelectedLayoutSegments()
 
-    const isContact = pathname === "/contact" || "/not-found"
+    const isContact = pathname === "/contact"
     const isNotFound = segments.length === 0 && pathname !== "/"
 
     const hideContact = isContact || isNotFound

@@ -2,6 +2,7 @@ import { projectItems } from "@/lib/api"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import BackButton from "@/components/ui/BackButton"
 
 type Props = {
     params: { slug: string }
@@ -19,12 +20,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
     return (
         <main className="min-h-screen px-8 py-20 max-w-5xl mx-auto">
-            <Link
-                href="/#project"
-                className="inline-flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-widest font-medium hover:text-primary transition-colors mb-16"
-            >
-                <ArrowLeft size={14} /> Back to Projects
-            </Link>
+            <BackButton/>
 
             {/* Hero image */}
             <div

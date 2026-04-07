@@ -6,6 +6,7 @@ import Navbar from "../components/layout/Navbar";
 import ContactSection from "@/components/section/ContactSection";
 import FooterSection from "@/components/section/FooterSection";
 import TransitionProvider from "@/lib/provider/TransitionProvider";
+import ClientWrapper from "@/components/layout/ClientWrapper";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -31,27 +32,29 @@ export default function RootLayout({
       <body
         className={`${manrope.variable} ${bigShoulders.variable} antialiased relative min-h-screen`}
       >
-        <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none">
-          <Noise
-            patternSize={250}
-            patternScaleX={1}
-            patternScaleY={1}
-            patternRefreshInterval={2}
-            patternAlpha={15}
-          />
-        </section>
+        <ClientWrapper>
+          <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none">
+            <Noise
+              patternSize={250}
+              patternScaleX={1}
+              patternScaleY={1}
+              patternRefreshInterval={2}
+              patternAlpha={15}
+            />
+          </section>
 
-        <section className="relative z-50">
-          <TransitionProvider>
-            <Navbar />
-          </TransitionProvider>
-        </section>
+          <section className="relative z-50">
+            <TransitionProvider>
+              <Navbar />
+            </TransitionProvider>
+          </section>
 
-        <main className="relative z-10">
-          {children}
-          <ContactSection />
-          <FooterSection />
-        </main>
+          <main className="relative z-10">
+            {children}
+            <ContactSection />
+            <FooterSection />
+          </main>
+        </ClientWrapper>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 'use client'
+
 import { useState } from "react"
-import { usePathname } from "next/navigation"
+import { usePathname, useSelectedLayoutSegments } from "next/navigation"
 import Preloader from "@/components/ui/Preloader"
 import ContactSection from "@/components/section/ContactSection"
 import FooterSection from "@/components/section/FooterSection"
@@ -10,9 +11,12 @@ let hasPreloaded = false
 export default function ClientWrapper({ children }: { children: React.ReactNode }) {
     const [done, setDone] = useState(hasPreloaded)
     const pathname = usePathname()
+    const segments = useSelectedLayoutSegments()
 
-    const hiddenRoutes = ["/contact"]
-    const isHidden = hiddenRoutes.includes(pathname)
+    const isContact = pathname === "/contact" || "/not-found"
+    const isNotFound = segments.length === 0 && pathname !== "/"
+
+    const hideContact = isContact || isNotFound
 
     return (
         <>
@@ -34,7 +38,7 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
             >
                 {children}
 
-                {!isHidden && <ContactSection />}
+                {!hideContact && <ContactSection />}
                 <FooterSection />
             </div>
         </>

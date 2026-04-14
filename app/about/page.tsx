@@ -2,6 +2,11 @@ import ScrollVelocity from "@/components/ScrollVelocity"
 import Dropdown from "@/components/ui/Dropdown"
 import { experiences, services } from "@/lib/api"
 
+export const metadata = {
+    title: "About — Rifandiysf",
+    description: "Fresh graduate Frontend Developer from Bandung. Learn about my background, skills, and experience.",
+}
+
 const techStack = [
     'TYPESCRIPT', 'JAVASCRIPT', 'TAILWIND CSS',
     'NEXT JS', 'REACT', 'FIGMA'

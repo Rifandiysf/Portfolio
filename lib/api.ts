@@ -65,6 +65,42 @@ export const projectItems: ProjectItem[] = [
         objective: `Managing employee leave manually is a common pain point for HR teams — tracking quotas, handling requests, and maintaining historical records across dozens or hundreds of employees is error-prone and time-consuming.\n\nDuring my 5-month frontend internship at PT. Walden Global Services, the team needed a dedicated leave management application that could streamline the entire leave lifecycle: from employee submissions to HR approvals, with full visibility into remaining balances and historical data.`,
         solution: `As the frontend developer on this project, I built a dual-interface application — one for employees and one for HR admins. Employees can submit leave requests, track their remaining quota across multiple years, and view their full leave history in a clean dashboard.\n\nThe admin side features a comprehensive overview of all employee leave activity, with diagram-based analytics to help HR teams spot patterns and manage workforce availability more effectively. Special attention was given to edge cases like expired leave balances from previous years, shown clearly in the UI to avoid confusion. The project sharpened my ability to work within a real engineering team, deliver production-ready code, and collaborate closely with backend developers on API integration.`,
     },
+
+    {
+        slug: "waroeng-pos",
+        title: "Waroeng POS",
+        description: "A real-time restaurant point of sale system for cashiers and kitchen staff with live order tracking.",
+        image: "/images/waroeng.png",
+        images: [
+            "/images/waroeng1.png",
+            "/images/waroeng2.png",
+            "/images/waroeng3.png",
+        ],
+        status: ["Web Development", "Restaurant App"],
+        year: 2026,
+        liveUrl: "",
+        githubUrl: "",
+        techStack: [
+            "Next.js",
+            "TypeScript",
+            "Supabase",
+            "Zustand",
+            "TanStack Query",
+            "Shadcn/UI",
+            "Tailwind CSS",
+        ],
+        features: [
+            "Real-time order management dashboard",
+            "Menu browsing with category filters",
+            "Cart & order creation for cashiers",
+            "Kitchen display with live order updates",
+            "Order status tracking (Pending, Process, Ready, Served)",
+            "Table occupancy monitoring",
+            "Revenue & sales analytics",
+        ],
+        objective: `Managing orders in a busy restaurant environment often leads to miscommunication between the front-of-house and the kitchen — missed orders, wrong tables, and delayed service are common pain points when relying on paper tickets or verbal handoffs.\n\nThe goal was to build a unified digital system where cashiers and kitchen staff could work in sync, with every order instantly visible to both parties without needing to refresh or manually update anything.`,
+        solution: `Waroeng POS was built as a full-stack restaurant point of sale system with two distinct roles in mind: the cashier and the kitchen. Cashiers can browse the menu by category, add items to a cart, assign a table, and create orders in seconds. The moment an order is placed, it appears live on the kitchen side — no delays, no missed tickets.\n\nThe kitchen staff can then update each order item's status (Pending → Process → Ready → Served) in real time, which is immediately reflected back to the cashier's view. Built on Supabase's real-time subscriptions, the entire system stays in sync across devices without any manual refresh. The admin dashboard rounds it out with revenue summaries, settled order counts, top-selling menus, and live table occupancy — giving restaurant owners a clear picture of daily operations at a glance.`,
+    },
 ]
 
 export const services = [

@@ -2,9 +2,9 @@
 import Link from "next/link"
 // import AnimatedArrowButton from "../ui/AnimatedArrowButton"
 import FlipLink from "../ui/FlipLink"
-import { projectItems } from "@/lib/api"
+import { Project } from "@/lib/schema/project-schema";
 
-const ProjectSection = () => {
+const ProjectSection = ({ projects }: { projects: Project[] }) => {
     return (
         <section className="flex flex-col gap-16 my-24 px-8 w-full max-w-6xl mx-auto">
             <div className='flex gap-0.5 w-full'>
@@ -19,7 +19,7 @@ const ProjectSection = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
-                {projectItems.map((data, idx) => (
+                {projects.map((data, idx) => (
                     <Link href={`/project/${data.slug}`} key={idx} className="flex flex-col gap-2">
                         <div
                             className="w-full rounded-lg bg-muted-foreground/60 aspect-[16/9]"

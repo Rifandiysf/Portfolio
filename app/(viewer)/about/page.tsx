@@ -1,6 +1,7 @@
 import ScrollVelocity from "@/components/ScrollVelocity"
 import Dropdown from "@/components/ui/Dropdown"
-import { experiences, services } from "@/lib/api"
+import { services } from "@/lib/api"
+import { getExperiences } from "@/lib/services/api";
 
 export const metadata = {
     title: "About — Rifandiysf",
@@ -12,7 +13,9 @@ const techStack = [
     'NEXT JS', 'REACT', 'FIGMA'
 ]
 
-const AboutPage = () => {
+const AboutPage = async () => {
+    const experiences = await getExperiences()
+
     return (
         <main className="min-h-screen">
 
@@ -117,14 +120,14 @@ const AboutPage = () => {
                             style={{ gridTemplateColumns: "80px 1fr" }}
                         >
                             <span className="text-[11px] uppercase tracking-[0.08em] text-muted-foreground/50 font-medium pt-1">
-                                {exp.year}
+                                {exp.date}
                             </span>
                             <div>
                                 <p className="text-lg font-medium text-primary mb-1">{exp.role}</p>
                                 <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground font-medium mb-4">
-                                    {exp.company}
+                                    {exp.companyName}
                                 </p>
-                                <p className="text-sm leading-[1.8] text-muted-foreground">{exp.desc}</p>
+                                <p className="text-sm leading-[1.8] text-muted-foreground">{exp.description}</p>
                             </div>
                         </div>
                     ))}

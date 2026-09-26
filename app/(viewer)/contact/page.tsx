@@ -1,11 +1,9 @@
 'use client'
 import { useState } from "react"
 import { ArrowUpRight, Loader2 } from "lucide-react"
-import emailjs from "@emailjs/browser"
-
-const EMAILJS_SERVICE_ID = "service_ta7jdhb"
-const EMAILJS_TEMPLATE_ID = "template_nipigip"
-const EMAILJS_PUBLIC_KEY = "mf_ipwQ-g3ZLJgzwQ"
+import { contactFormSchema, ContactFormValues } from "@/lib/schema/contact-schema";
+import { useMutation } from "@tanstack/react-query";
+import { sendContactMessage } from "@/lib/services/api";
 
 const services = [
     "Frontend Dev",
@@ -17,29 +15,27 @@ const services = [
 const ContactPage = () => {
     const [selected, setSelected] = useState("Frontend Dev")
     const [form, setForm] = useState({ name: "", email: "", message: "" })
-    const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle")
+    const [errors, setErrors] = useState<Partial<Record<keyof ContactFormValues, string>>>({})
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const mutation = useMutation({
+        mutationFn: sendContactMessage,
+    })
+
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        setStatus("loading")
-
-        try {
-            await emailjs.send(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                {
-                    from_name: form.name,
-                    from_email: form.email,
-                    service: selected,
-                    message: form.message,
-                },
-                EMAILJS_PUBLIC_KEY
-            )
-            setStatus("sent")
-            setForm({ name: "", email: "", message: "" })
-        } catch {
-            setStatus("error")
+        const result = contactFormSchema.safeParse({ ...form, service: selected })
+        if (!result.success) {
+            const fieldErrors: typeof errors = {}
+            result.error.issues.forEach((issue) => {
+                fieldErrors[issue.path[0] as keyof ContactFormValues] = issue.message
+            })
+            setErrors(fieldErrors)
+            return
         }
+        setErrors({})
+        mutation.mutate(result.data, {
+            onSuccess: () => setForm({ name: "", email: "", message: "" }),
+        })
     }
 
     return (
@@ -150,7 +146,7 @@ const ContactPage = () => {
                     </div>
 
                     {/* Success */}
-                    {status === "sent" ? (
+                    {mutation.isSuccess ? (
                         <div className="border border-border/40 rounded-xl p-10 text-center">
                             <p className="font-big-shoulders font-[900] text-3xl text-primary mb-3">
                                 Message Sent!
@@ -159,7 +155,7 @@ const ContactPage = () => {
                                 Thanks for reaching out — I&apos;ll get back to you soon.
                             </p>
                             <button
-                                onClick={() => setStatus("idle")}
+                                onClick={() => mutation.reset()}
                                 className="self-start inline-flex items-center gap-2.5 mt-6 text-[12px] uppercase tracking-[0.08em] font-medium text-muted-foreground hover:text-primary transition-colors"
                             >
                                 Send another <ArrowUpRight size={15} />
@@ -183,6 +179,11 @@ const ContactPage = () => {
                                         onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
                                         className="bg-transparent border-b border-border/40 pb-3 text-[15px] text-primary placeholder:text-muted-foreground/30 outline-none focus:border-primary transition-colors"
                                     />
+                                    {errors[field.key as keyof ContactFormValues] && (
+                                        <span className="text-xs text-red-500">
+                                            {errors[field.key as keyof ContactFormValues]}
+                                        </span>
+                                    )}
                                 </div>
                             ))}
 
@@ -198,10 +199,13 @@ const ContactPage = () => {
                                     onChange={(e) => setForm({ ...form, message: e.target.value })}
                                     className="bg-transparent border-b border-border/40 pb-3 text-[15px] text-primary placeholder:text-muted-foreground/30 outline-none focus:border-primary transition-colors resize-none"
                                 />
+                                {errors.message && (
+                                    <span className="text-xs text-red-500">{errors.message}</span>
+                                )}
                             </div>
 
                             {/* Error */}
-                            {status === "error" && (
+                            {mutation.isError && (
                                 <p className="text-sm text-red-500">
                                     Something went wrong. Please try again or email me directly.
                                 </p>
@@ -209,10 +213,10 @@ const ContactPage = () => {
 
                             <button
                                 type="submit"
-                                disabled={status === "loading"}
+                                disabled={mutation.isPending}
                                 className="self-start inline-flex items-center gap-2.5 bg-primary text-primary-foreground px-7 py-3.5 rounded-full text-[13px] font-medium uppercase tracking-[0.06em] hover:opacity-85 transition-opacity mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {status === "loading" ? (
+                                {mutation.isPending ? (
                                     <>
                                         <Loader2 size={14} className="animate-spin" />
                                         Sending...

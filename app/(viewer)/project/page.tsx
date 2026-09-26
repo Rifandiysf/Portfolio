@@ -1,13 +1,15 @@
 import Link from "next/link"
-import { projectItems } from "@/lib/api"
 import { ArrowUpRight } from "lucide-react"
+import { getProjects } from "@/lib/services/api";
 
 export const metadata = {
     title: "Projects — Rifandiysf",
     description: "Selected works by Rifandiyusuf — web apps built with Next.js, React, and Tailwind CSS.",
 }
 
-const ProjectsPage = () => {
+const ProjectsPage = async () => {
+    const projectItems = await getProjects()
+
     return (
         <main className="px-8 pt-20 pb-32 max-w-6xl mx-auto">
 

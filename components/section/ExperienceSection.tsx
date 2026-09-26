@@ -1,11 +1,11 @@
 'use client'
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
-import { experienceItem } from "@/lib/api"
 import FlipLink from "../ui/FlipLink"
 import Dropdown from "../ui/Dropdown"
+import { Experience } from "@/lib/schema/experience-schema";
 
-const ExperienceSection = () => {
+const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
     const ref = useRef(null)
     const inView = useInView(ref, { once: true, margin: "-100px" })
 
@@ -21,7 +21,7 @@ const ExperienceSection = () => {
             </div>
 
             <div className="flex flex-col">
-                {experienceItem.map((data, idx) => (
+                {experiences.map((data, idx) => (
                     <motion.div
                         key={idx}
                         className="grid border-t border-border/40 py-10 last:border-b last:border-border/40 gap-8 group"

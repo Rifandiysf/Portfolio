@@ -1,8 +1,8 @@
-import { projectItems } from "@/lib/api"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import BackButton from "@/components/ui/BackButton"
+import { getProjectBySlug, getProjects } from "@/lib/services/api";
 
 type Props = {
     params: { slug: string }
@@ -11,12 +11,13 @@ type Props = {
 export default async function ProjectDetailPage({ params }: Props) {
     const { slug } = await params;
 
-    const project = projectItems.find((p) => p.slug === slug);
+    const project = await getProjectBySlug(slug);
 
     if (!project) notFound();
 
-    const currentIndex = projectItems.findIndex((p) => p.slug === slug);
-    const nextProject = projectItems[(currentIndex + 1) % projectItems.length];
+    const allProject = await getProjects();
+    const currentIndex = allProject.findIndex((p) => p.slug === slug);
+    const nextProject = allProject[(currentIndex + 1) % allProject.length];
 
     return (
         <main className="min-h-screen px-8 py-20 max-w-6xl mx-auto">
@@ -208,5 +209,6 @@ export default async function ProjectDetailPage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-    return projectItems.map((p) => ({ slug: p.slug }))
+    const projects = await getProjects();
+    return projects.map((p) => ({ slug: p.slug }));
 }

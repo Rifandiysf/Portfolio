@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache"
 import { apiClient } from "../axios";
-import { projectListSchema, projectSchema } from "../schema/project-schema";
-import { experienceListSchema } from "../schema/experience-schema";
+import { projectListSchema, ProjectPayload, projectSchema } from "../schema/project-schema";
+import { ExperienceFormValues, experienceListSchema } from "../schema/experience-schema";
 import { ContactFormValues } from "../schema/contact-schema";
 import { LoginValues } from "../schema/auth-schema";
 
@@ -48,4 +48,34 @@ export async function sendContactMessage(data: ContactFormValues) {
 export async function loginAdmin(data: LoginValues) {
     const res = await apiClient.post("/auth/login", data)
     return res.data as { accessToken: string }
+}
+
+// Projects
+export async function getAdminProjects() {
+    const res = await apiClient.get("/projects/admin/all")
+    return projectListSchema.parse(res.data)
+}
+export const createProject = (data: ProjectPayload) => apiClient.post("/projects", data)
+export const updateProject = ({ id, data }: { id: string; data: ProjectPayload }) =>
+    apiClient.patch(`/projects/${id}`, data)
+export const deleteProject = (id: string) => apiClient.delete(`/projects/${id}`)
+
+// Experiences
+export async function getAdminExperiences() {
+    const res = await apiClient.get("/experiences")
+    return experienceListSchema.parse(res.data)
+}
+export const createExperience = (data: ExperienceFormValues) => apiClient.post("/experiences", data)
+export const updateExperience = ({ id, data }: { id: string; data: ExperienceFormValues }) =>
+    apiClient.patch(`/experiences/${id}`, data)
+export const deleteExperience = (id: string) => apiClient.delete(`/experiences/${id}`)
+
+// Upload
+export async function uploadImage(file: File) {
+    const formData = new FormData()
+    formData.append("file", file)
+    const res = await apiClient.post("/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" }, // timpa default application/json
+    })
+    return res.data.url as string
 }

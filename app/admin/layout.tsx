@@ -1,21 +1,20 @@
 'use client'
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { useAuthStore } from "@/stores/auth-store"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { useAuth } from "@/hooks/use-auth";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter()
-    const token = useAuthStore((state) => state.token)
-    const hasHydrated = useAuthStore((state) => state.hasHydrated)
+    const { isLoading, isError } = useAuth()
 
     useEffect(() => {
-        if (hasHydrated && !token) router.replace("/login")
-    }, [hasHydrated, token, router])
+        if (!isLoading && isError) router.replace("/login")
+    }, [isLoading, isError, router])
 
-    if (!hasHydrated || !token) return null
+    if (isLoading || isError) return null
 
     return (
         <SidebarProvider

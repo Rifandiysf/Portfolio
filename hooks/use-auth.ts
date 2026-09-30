@@ -11,5 +11,6 @@ export function useAuth() {
         },
         retry: false,
         staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: true,
     })
 }

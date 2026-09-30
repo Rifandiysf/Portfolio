@@ -1,6 +1,6 @@
 'use client'
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -11,9 +11,12 @@ import { loginSchema, LoginValues } from "@/lib/schema/auth-schema";
 import Image from "next/image";
 import { apiClient } from "@/lib/axios";
 import Link from "next/link";
+import { useAuth } from "@/hooks/use-auth";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
     const router = useRouter()
+    const params = useSearchParams()
+    const { data } = useAuth()
     const [form, setForm] = useState({ email: "", password: "" })
     const [errors, setErrors] = useState<Partial<Record<keyof LoginValues, string>>>({})
 
@@ -46,6 +49,15 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`
     }
 
+    useEffect(() => {
+        if (data) router.replace("/admin")
+    }, [data, router])
+
+    const error =
+        params.get("error") === "unauthorized"
+            ? "Akun Google ini tidak diizinkan."
+            : null
+
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card className="overflow-hidden p-0">
@@ -58,6 +70,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                                     Sign in to manage portfolio content
                                 </p>
                             </div>
+
+                            {error && <p className="text-sm text-destructive">{error}</p>}
 
                             <Field>
                                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -119,7 +133,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                                 <span>Login with Google</span>
                             </Button>
 
-                            <FieldDescription className="text-center">  
+                            <FieldDescription className="text-center">
                                 Portfolio content management
                             </FieldDescription>
                         </FieldGroup>

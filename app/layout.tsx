@@ -21,7 +21,7 @@ const bigShoulders = Big_Shoulders({
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Rifandiyusuf",
+  name: "Rifandi Yusuf",
   url: "https://rifandiysf.vercel.app",
   jobTitle: "Junior Frontend Developer",
   address: {

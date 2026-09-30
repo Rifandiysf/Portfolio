@@ -1,6 +1,6 @@
+import { services } from "@/app/constants/service-constant";
 import ScrollVelocity from "@/components/ScrollVelocity"
 import Dropdown from "@/components/ui/Dropdown"
-import { services } from "@/lib/api"
 import { getExperiences } from "@/lib/services/api";
 
 export const metadata = {

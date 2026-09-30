@@ -43,7 +43,7 @@ const AboutPage = async () => {
                     <div
                         className="aspect-[3/4] h-64 rounded-xl bg-muted border border-border/40 flex items-center justify-center justify-self-end"
                         style={{
-                            backgroundImage: `url("/images/ProfilePicture.jpg")`,
+                            backgroundImage: `url("/images/ProfilePicture.png")`,
                             backgroundSize: "cover",
                             backgroundPosition: "center",
                             backgroundColor: "hsl(var(--muted))",

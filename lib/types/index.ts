@@ -67,6 +67,12 @@ export interface ScrollVelocityProps {
     separatorSvg?: React.ReactNode;
 }
 
+export interface MenuItem {
+    id: string;
+    label: string;
+    href: string;
+}
+
 export type ProjectItem = {
     slug: string;
     title: string;

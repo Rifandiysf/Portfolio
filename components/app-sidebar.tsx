@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
@@ -10,20 +9,17 @@ import {
   SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { data } from "@/app/constants/sidebar-constant"
-import { apiClient } from "@/lib/axios"
-import { useQueryClient } from "@tanstack/react-query"
+
 import Link from "next/link"
 import { useAuth } from "@/hooks/use-auth";
+import { useLogout } from "@/hooks/use-logout";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: me } = useAuth()
-  const qc = useQueryClient()
-  const router = useRouter()
+  const { mutate: logOut } = useLogout()
 
-  const handleLogout = async () => {
-    await apiClient.post("/auth/logout")
-    qc.setQueryData(["auth", "me"], undefined)
-    router.push("/login")
+  const handleLogout = () => {
+    logOut()
   }
 
   const user = {

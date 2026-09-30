@@ -72,51 +72,20 @@ export type ProjectItem = {
     title: string;
     description: string;
     image: string;
-    images: string[]; // tambah: array screenshot (index 0 = objective, 1&2 = solution)
+    images: string[];
     status: string[];
     year: number;
     liveUrl?: string;
     githubUrl?: string;
     techStack: string[];
     features: string[];
-    objective?: string; // tambah: narasi panjang bagian "The Problem"
-    solution?: string; // tambah: narasi panjang bagian "The Approach"
+    objective?: string;
+    solution?: string;
 };
 
-// Auth
-export interface LoginDto {
-    email: string;
-    password: string;
-}
-
-export interface ForgotPasswordDto {
-    email: string;
-}
-
-export interface ResetPasswordDto {
-    token: string;
-    newPassword: string;
-}
-
-// Sesuai AuthTokenResponse dari BE
-export interface AuthResponse {
-    accessToken: string;
-    user: {
-        id: string;
-        name: string;
-        email: string;
-        role: string;
-        avatarUrl: string | null;
-    };
-}
-
-//Get Profile
-export interface UserProfile {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    avatarUrl: string | null;
-    bio: string | null;
-    createdAt: string;
+export interface Profile {
+    id: string
+    email: string
+    name: string | null
+    avatarUrl: string | null
 }

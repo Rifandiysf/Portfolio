@@ -1,22 +1,37 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  Sidebar, SidebarContent, SidebarFooter, SidebarHeader,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { data } from "@/app/constants/sidebar-constant";
-import Link from "next/link";
+import { data } from "@/app/constants/sidebar-constant"
+import { apiClient } from "@/lib/axios"
+import { useQueryClient } from "@tanstack/react-query"
+import Link from "next/link"
+import { useAuth } from "@/hooks/use-auth";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: me } = useAuth()
+  const qc = useQueryClient()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    await apiClient.post("/auth/logout")
+    qc.setQueryData(["auth", "me"], undefined)
+    router.push("/login")
+  }
+
+  const user = {
+    name: me?.name ?? "Admin",
+    email: me?.email ?? "",
+    avatar: me?.avatarUrl ?? "RY",
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -35,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} onLogout={handleLogout} />
       </SidebarFooter>
     </Sidebar>
   )

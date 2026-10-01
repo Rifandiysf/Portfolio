@@ -101,6 +101,41 @@ export const projectItems: ProjectItem[] = [
         objective: `Managing orders in a busy restaurant environment often leads to miscommunication between the front-of-house and the kitchen — missed orders, wrong tables, and delayed service are common pain points when relying on paper tickets or verbal handoffs.\n\nThe goal was to build a unified digital system where cashiers and kitchen staff could work in sync, with every order instantly visible to both parties without needing to refresh or manually update anything.`,
         solution: `Waroeng POS was built as a full-stack restaurant point of sale system with two distinct roles in mind: the cashier and the kitchen. Cashiers can browse the menu by category, add items to a cart, assign a table, and create orders in seconds. The moment an order is placed, it appears live on the kitchen side — no delays, no missed tickets.\n\nThe kitchen staff can then update each order item's status (Pending → Process → Ready → Served) in real time, which is immediately reflected back to the cashier's view. Built on Supabase's real-time subscriptions, the entire system stays in sync across devices without any manual refresh. The admin dashboard rounds it out with revenue summaries, settled order counts, top-selling menus, and live table occupancy — giving restaurant owners a clear picture of daily operations at a glance.`,
     },
+
+    {
+        slug: "jobfin",
+        title: "JobFin",
+        description: "A job application tracker that maps your commute distance to every company, helping you stay organized and find roles that fit your everyday life.",
+        image: "/images/jobfin.png",
+        images: [
+            "/images/jobfin1.png",
+            "/images/jobfin2.png",
+            "/images/jobfin3.png",
+        ],
+        status: ["Web Development", "Productivity App"],
+        year: 2026,
+        liveUrl: "https://jobfin.rifandiysf.tech",
+        githubUrl: "https://github.com/Rifandiysf/JobFin-server",
+        techStack: [
+            "React",
+            "Express.js",
+            "Prisma",
+            "MySQL",
+            "MapLibre GL",
+            "OSRM",
+            "Tailwind CSS",
+        ],
+        features: [
+            "Full CRUD application tracking with search and filters",
+            "Commute distance and route mapping from home to each company",
+            "Dashboard analytics for applications by status and monthly trends",
+            "Google sign-in and email authentication with password reset",
+            "Home address setup as the starting point for every commute calculation",
+            "Average commute distance tracking across all applications",
+        ],
+        objective: `Job hunting often turns messy fast — applications pile up across spreadsheets, emails, and sticky notes, and it's easy to lose track of where you've applied or accept an offer without realizing the office is hours from home.\n\nThe goal was to build a single platform where every application, its status, and its real-world commute distance live in one place, so job seekers can make decisions based on their actual day-to-day life, not just the job description.`,
+        solution: `JobFin was built as a full-stack job application tracker centered on one detail most job boards ignore: commute distance. Users start by setting their home address, which becomes the reference point for every application they log afterward.\n\nFor each application, JobFin calculates the real driving route and distance to the company using OSRM, rendered on an interactive map built with MapLibre GL. Users can track company, position, and status (Applied, Interview, Offer, Rejected) for every application, all searchable and filterable from a single dashboard. The dashboard also visualizes progress over time — applications by status, monthly trends, and average commute distance — giving users a clear picture of their job search at a glance. Authentication supports both Google sign-in and email with a full forgot/reset password flow, keeping every user's data private and secure.`,
+    }
 ]
 
 export const services = [

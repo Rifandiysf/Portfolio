@@ -4,12 +4,7 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Plus, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface MenuItem {
-    id: string;
-    label: string;
-    href: string;
-}
+import { menuItems, socialItems } from '@/app/constants/navbar-constant';
 
 const Navbar: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -18,7 +13,6 @@ const Navbar: React.FC = () => {
     const [isScreenSize, setIsScreenSize] = useState("desktop");
     const [isScrolled, setIsScrolled] = useState(false)
 
-    // Check if mobile
     useEffect(() => {
         const checkScreen = () => {
             const width = window.innerWidth;
@@ -64,22 +58,11 @@ const Navbar: React.FC = () => {
         }
     }
 
-    const menuItems: MenuItem[] = [
-        { id: '01', label: 'HOME', href: '/' },
-        { id: '02', label: 'ABOUT', href: '/about' },
-        { id: '03', label: 'PROJECT', href: '/project' },
-        { id: '04', label: 'CONTACT', href: '/contact' },
-    ];
-
-    const socialItems = [
-        { id: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/rifandiysf' },
-        { id: 'github', label: 'GitHub', href: 'https://github.com/Rifandiysf' },
-        { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/rifandiyusuf' },
-    ];
-
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+    const closeSidebar = () => setIsSidebarOpen(false);
 
     const sidebarVariants: Variants = {
         closed: {
@@ -180,7 +163,7 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center justify-between px-6 py-4">
 
                     {/* LOGO */}
-                    <Link href='/' className="flex items-center space-x-2">
+                    <Link href='/' onClick={closeSidebar} className="flex items-center space-x-2">
                         <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
                             <Image
                                 src={'/rifandiysf-logo.svg'}
@@ -291,8 +274,9 @@ const Navbar: React.FC = () => {
                                             onMouseEnter={() => setHoveredItem(item.id)}
                                             onMouseLeave={() => setHoveredItem(null)}
                                         >
-                                            <a
+                                            <Link
                                                 href={item.href}
+                                                onClick={closeSidebar}
                                                 className={`flex gap-1.5 text-6xl font-bold transition-all duration-300 ${hoveredItem && hoveredItem !== item.id
                                                     ? 'text-foreground'
                                                     : hoveredItem === item.id
@@ -322,7 +306,7 @@ const Navbar: React.FC = () => {
                                                 >
                                                     {item.id}
                                                 </motion.span>
-                                            </a>
+                                            </Link>
                                         </motion.div>
                                     ))}
                                 </nav>

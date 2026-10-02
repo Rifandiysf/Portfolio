@@ -2,37 +2,39 @@ import type { Metadata } from "next";
 import { Manrope, Big_Shoulders } from "next/font/google";
 import "./globals.css";
 import Noise from "@/components/Noise";
-import Navbar from "../components/layout/Navbar";
-import TransitionProvider from "@/lib/provider/TransitionProvider";
-import ClientWrapper from "@/components/layout/ClientWrapper";
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { QueryProviders } from "@/lib/provider/QueryProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const bigShoulders = Big_Shoulders({
   variable: "--font-bigShoulders",
   subsets: ["latin"],
-  display: "swap"
+  display: "swap",
 });
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Rifandiyusuf",
+  name: "Rifandi Yusuf",
   url: "https://rifandiysf.vercel.app",
   jobTitle: "Junior Frontend Developer",
-  address: { "@type": "PostalAddress", addressLocality: "Bandung", addressCountry: "ID" },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Bandung",
+    addressCountry: "ID",
+  },
   sameAs: [
     "https://github.com/Rifandiysf",
     "https://linkedin.com/in/rifandiyusuf",
     "https://instagram.com/rifandiysf",
   ],
-}
+};
 
 export const metadata: Metadata = {
   title: "Rifandiysf - Portfolio",
@@ -45,14 +47,7 @@ export const metadata: Metadata = {
       "Fresh graduate passionate about Frontend Development & UI/UX Design. Check out my projects and experience.",
     url: "https://rifandiysf.vercel.app",
     siteName: "Rifandiysf Portfolio",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Rifandiyusuf — Frontend Developer",
-      },
-    ],
+    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
     locale: "en_US",
     type: "website",
   },
@@ -60,9 +55,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body
@@ -72,27 +65,20 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ClientWrapper>
-          <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none">
-            <Noise
-              patternSize={250}
-              patternScaleX={1}
-              patternScaleY={1}
-              patternRefreshInterval={2}
-              patternAlpha={15}
-            />
-          </section>
 
-          <section className="relative z-50">
-            <TransitionProvider>
-              <Navbar />
-            </TransitionProvider>
-          </section>
+        <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none">
+          <Noise
+            patternSize={250}
+            patternScaleX={1}
+            patternScaleY={1}
+            patternRefreshInterval={2}
+            patternAlpha={15}
+          />
+        </section>
 
-          <main className="relative z-10">
-            {children}
-          </main>
-        </ClientWrapper>
+        <QueryProviders>
+          {children}
+        </QueryProviders>
 
         <Analytics />
         <SpeedInsights />

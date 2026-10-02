@@ -13,7 +13,7 @@ export type NoiseProps = {
     patternScaleY?: number;
     patternRefreshInterval?: number;
     patternAlpha?: number;
-}
+};
 
 // HeroSection Component Type
 export type HeroSectionPros = {
@@ -21,14 +21,14 @@ export type HeroSectionPros = {
     title?: string;
     subline?: string;
     className?: string;
-}
+};
 
 export type ExperienceItemType = {
-    role: string
-    companyName: string
-    date: string
-    description: string
-}
+    role: string;
+    companyName: string;
+    date: string;
+    description: string;
+};
 
 // ScrollVelocity Componnet Type
 export interface VelocityMapping {
@@ -67,18 +67,31 @@ export interface ScrollVelocityProps {
     separatorSvg?: React.ReactNode;
 }
 
+export interface MenuItem {
+    id: string;
+    label: string;
+    href: string;
+}
+
 export type ProjectItem = {
-    slug: string
-    title: string
-    description: string
-    image: string
-    images: string[]        // tambah: array screenshot (index 0 = objective, 1&2 = solution)
-    status: string[]
-    year: number
-    liveUrl?: string
-    githubUrl?: string
-    techStack: string[]
-    features: string[]
-    objective?: string       // tambah: narasi panjang bagian "The Problem"
-    solution?: string        // tambah: narasi panjang bagian "The Approach"
+    slug: string;
+    title: string;
+    description: string;
+    image: string;
+    images: string[];
+    status: string[];
+    year: number;
+    liveUrl?: string;
+    githubUrl?: string;
+    techStack: string[];
+    features: string[];
+    objective?: string;
+    solution?: string;
+};
+
+export interface Profile {
+    id: string
+    email: string
+    name: string | null
+    avatarUrl: string | null
 }

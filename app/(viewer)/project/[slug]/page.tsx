@@ -208,6 +208,8 @@ export default async function ProjectDetailPage({ params }: Props) {
     )
 }
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
     const projects = await getProjects();
     return projects.map((p) => ({ slug: p.slug }));

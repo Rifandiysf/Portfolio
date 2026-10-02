@@ -1,7 +1,11 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios"
 
+const isServer = typeof window === "undefined"
+
 export const apiClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    baseURL: isServer
+        ? (process.env.BACKEND_URL ?? "http://localhost:3001")
+        : "/api",
     withCredentials: true,
 })
 

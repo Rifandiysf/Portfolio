@@ -97,7 +97,7 @@ export function ProjectForm({ project }: { project?: Project }) {
 
                 <div className="mb-[72px]">
                     <div
-                        className="w-full rounded-xl aspect-[16/9] mb-4 border border-border/40 flex items-center justify-center"
+                        className="w-full rounded-xl aspect-[16/9] mb-4 border border-border/40 bg-accent flex items-center justify-center"
                         style={{
                             backgroundImage: cover ? `url("${cover}")` : undefined,
                             backgroundPosition: "center",
@@ -285,7 +285,7 @@ export function ProjectForm({ project }: { project?: Project }) {
                 </section>
             </main>
 
-            <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border/40 bg-background/80 backdrop-blur">
+            <div className="fixed inset-x-0 bottom-0 z-9 border-t border-border/40 bg-background/80 backdrop-blur">
                 <div className="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between gap-4">
                     <p className="text-sm text-red-500 truncate">
                         {mutation.isError ? mutation.error.message : ""}

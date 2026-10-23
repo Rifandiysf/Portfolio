@@ -26,20 +26,19 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
                     <div
                         key={idx}
                         data-reveal
-                        className="grid border-t border-border/40 py-10 last:border-b last:border-border/40 gap-8 group"
-                        style={{ gridTemplateColumns: "1fr 2fr" }}
+                        className="group grid grid-cols-1 gap-4 border-t border-border/40 py-8 last:border-b last:border-border/40 md:grid-cols-[1fr_2fr] md:gap-8 md:py-10"
                     >
-                        <div className="flex flex-col gap-2 pt-1">
-                            <span className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground/40 font-medium">
+                        <div className="flex flex-col gap-1 md:gap-2 md:pt-1">
+                            <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground/40">
                                 {data.date}
                             </span>
-                            <span className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground/60 font-medium mt-1">
+                            <span className="text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground/60 md:mt-1">
                                 {data.companyName}
                             </span>
                         </div>
 
-                        <div className="flex flex-col gap-4">
-                            <h2 className="text-lg font-semibold text-primary leading-snug">
+                        <div className="flex flex-col gap-3 md:gap-4">
+                            <h2 className="text-base font-semibold leading-snug text-primary md:text-lg">
                                 {data.role}
                             </h2>
                             <p className="text-sm leading-[1.85] text-muted-foreground">
@@ -47,11 +46,11 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
                             </p>
 
                             {data.techStack && (
-                                <div className="flex gap-2 flex-wrap pt-2">
+                                <div className="flex flex-wrap gap-2 pt-2">
                                     {data.techStack.map((tech: string, i: number) => (
                                         <span
                                             key={i}
-                                            className="text-[11px] uppercase tracking-[0.07em] font-medium px-3 py-1.5 rounded-full bg-secondary border border-border/40 text-muted-foreground"
+                                            className="rounded-full border border-border/40 bg-secondary px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.07em] text-muted-foreground"
                                         >
                                             {tech}
                                         </span>
@@ -59,7 +58,6 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
                                 </div>
                             )}
                         </div>
-
                     </div>
                 ))}
             </div>

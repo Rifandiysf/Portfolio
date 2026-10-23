@@ -85,8 +85,8 @@ const AboutSection = () => {
                     {
                         [
                             { num: "5+", label: "Projects Shipped" },
-                            { num: "3+", label: "Years Development Experience" },
-                            { num: "6+", label: "Tech Stack Mastered" },
+                            { num: "1+", label: "Years Development Experience" },
+                            { num: "6+", label: "Tech Stack Experience" },
                         ].map((stat, i) => (
                             <div
                                 key={i}

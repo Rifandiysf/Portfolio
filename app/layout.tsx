@@ -5,6 +5,7 @@ import Noise from "@/components/Noise";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { QueryProviders } from "@/lib/provider/QueryProvider";
+import { ThemeProvider } from "@/lib/provider/ThemeProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -77,9 +78,16 @@ export default function RootLayout({
           />
         </section>
 
-        <QueryProviders>
-          {children}
-        </QueryProviders>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryProviders>
+            {children}
+          </QueryProviders>
+        </ThemeProvider>
 
         <Analytics />
         <SpeedInsights />

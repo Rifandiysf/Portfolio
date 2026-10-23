@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { menuItems, socialItems } from '@/app/constants/navbar-constant';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const getPanelOffset = () => {
     const width = window.innerWidth;
@@ -129,28 +130,31 @@ const Navbar: React.FC = () => {
                         <h1 className="font-extrabold font-big-shoulders text-3xl text-foreground"><span className='font-[900]'>R</span>ysf</h1>
                     </Link>
 
-                    <button
-                        onClick={toggle}
-                        aria-expanded={isOpen}
-                        aria-label={isOpen ? 'Close menu' : 'Open menu'}
-                        className="flex items-center space-x-2 px-4 py-2 text-foreground text-2xl rounded-lg cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
-                    >
-                        <div className="flex overflow-hidden" aria-hidden="true">
-                            {(isOpen ? "Close" : "Menu").split('').map((letter, index) => (
-                                <span
-                                    key={`${isOpen ? 'close' : 'menu'}-${index}`}
-                                    data-btn-letter
-                                    className="font-medium inline-block"
-                                >
-                                    {letter}
-                                </span>
-                            ))}
-                        </div>
+                    <div className="flex items-center gap-2">
+                        <ThemeToggle />
+                        <button
+                            onClick={toggle}
+                            aria-expanded={isOpen}
+                            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                            className="flex items-center space-x-2 px-4 py-2 text-foreground text-2xl rounded-lg cursor-pointer transition-transform duration-200 hover:scale-105 active:scale-95"
+                        >
+                            <div className="flex overflow-hidden" aria-hidden="true">
+                                {(isOpen ? "Close" : "Menu").split('').map((letter, index) => (
+                                    <span
+                                        key={`${isOpen ? 'close' : 'menu'}-${index}`}
+                                        data-btn-letter
+                                        className="font-medium inline-block"
+                                    >
+                                        {letter}
+                                    </span>
+                                ))}
+                            </div>
 
-                        <div ref={iconRef}>
-                            {isOpen ? <X size={24} /> : <Plus size={24} />}
-                        </div>
-                    </button>
+                            <div ref={iconRef}>
+                                {isOpen ? <X size={24} /> : <Plus size={24} />}
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </header>
 

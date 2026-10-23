@@ -1,76 +1,70 @@
+'use client'
+import { useRef } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { gsap, useGSAP } from "@/lib/gsap";
 
 const DURATION = 0.25
 const STAGGER = 0.025
 
 export default function FlipLink({ children, href, className, lineHeight = 0.75 }: { children: string, href: string, className?: string, lineHeight?: number }) {
+    const linkRef = useRef<HTMLAnchorElement>(null)
+    const letters = children.split("")
+
+    useGSAP(() => {
+        const link = linkRef.current
+        if (!link) return
+
+        const mm = gsap.matchMedia()
+        mm.add("(hover: hover) and (prefers-reduced-motion: no-preference)", () => {
+            const top = link.querySelectorAll("[data-flip-top] > span")
+            const bottomGroup = link.querySelector("[data-flip-bottom]")
+            const bottom = link.querySelectorAll("[data-flip-bottom] > span")
+
+            gsap.set(bottomGroup, { visibility: "visible" })
+            gsap.set(bottom, { yPercent: 100 })
+
+            const tl = gsap.timeline({
+                paused: true,
+                defaults: { duration: DURATION, ease: "power2.inOut" },
+            })
+            tl.to(top, { yPercent: -100, stagger: STAGGER }, 0)
+                .to(bottom, { yPercent: 0, stagger: STAGGER }, 0)
+
+            const onEnter = () => tl.play()
+            const onLeave = () => tl.reverse()
+            link.addEventListener("mouseenter", onEnter)
+            link.addEventListener("mouseleave", onLeave)
+            link.addEventListener("focus", onEnter)
+            link.addEventListener("blur", onLeave)
+
+            return () => {
+                link.removeEventListener("mouseenter", onEnter)
+                link.removeEventListener("mouseleave", onLeave)
+                link.removeEventListener("focus", onEnter)
+                link.removeEventListener("blur", onLeave)
+                tl.kill()
+            }
+        })
+    }, { scope: linkRef })
+
     return (
-        <motion.a
-            initial="initial"
-            whileHover="hovered"
-            whileTap="clicked"
+        <Link
+            ref={linkRef}
             href={href}
             className={cn("relative block overflow-hidden whitespace-nowrap text-lg font-black text-foreground uppercase", className)}
-            style={{
-                lineHeight: lineHeight,
-            }}
+            style={{ lineHeight }}
         >
-            <div
-            >
-                {children.split("").map((letter, idx) => {
-                    return <motion.span
-                        key={idx}
-                        variants={{
-                            initial: {
-                                y: 0
-                            },
-                            hovered: {
-                                y: "-100%"
-                            },
-                            clicked: {
-                                y: "-100%"
-                            }
-                        }}
-                        transition={{
-                            duration: DURATION,
-                            ease: "easeInOut",
-                            delay: STAGGER * idx
-                        }}
-                        className="inline-block"
-                    >
-                        {letter}
-                    </motion.span>
-                })}
+            <div data-flip-top>
+                {letters.map((letter, idx) => (
+                    <span key={idx} className="inline-block">{letter}</span>
+                ))}
             </div>
-            <div
-                className="absolute inset-0"
-            >
-                {children.split("").map((letter, idx) => {
-                    return <motion.span
-                        key={idx}
-                        variants={{
-                            initial: {
-                                y: "100%"
-                            },
-                            hovered: {
-                                y: 0
-                            },
-                            clicked: {
-                                y: "-100%"
-                            }
-                        }}
-                        transition={{
-                            duration: DURATION,
-                            ease: "easeInOut",
-                            delay: STAGGER * idx
-                        }}
-                        className="inline-block"
-                    >
-                        {letter}
-                    </motion.span>
-                })}
+            <div data-flip-bottom aria-hidden="true" className="invisible absolute inset-0">
+                {letters.map((letter, idx) => (
+                    <span key={idx} className="inline-block">{letter}</span>
+                ))}
             </div>
-        </motion.a>
+        </Link>
     )
 }

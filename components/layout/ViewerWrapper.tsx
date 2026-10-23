@@ -1,19 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import Preloader from "@/components/ui/Preloader";
 import ContactSection from "@/components/section/ContactSection";
 import FooterSection from "@/components/section/FooterSection";
+import { PreloaderProvider, usePreloader } from "@/lib/provider/PreloaderProvider";
 
-let hasPreloaded = false;
-
-export default function ViewerWrapper({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    const [done, setDone] = useState(hasPreloaded);
+function ViewerContent({ children }: { children: React.ReactNode }) {
+    const { finished, markReady, markFinished } = usePreloader();
     const pathname = usePathname();
     const segments = useSelectedLayoutSegments();
 
@@ -23,26 +17,21 @@ export default function ViewerWrapper({
 
     return (
         <>
-            {!hasPreloaded && (
-                <Preloader
-                    onComplete={() => {
-                        hasPreloaded = true;
-                        setDone(true);
-                    }}
-                />
-            )}
+            {!finished && <Preloader onReveal={markReady} onComplete={markFinished} />}
 
-            <div
-                style={{
-                    opacity: done ? 1 : 0,
-                    transform: done ? "none" : "translateY(12px)",
-                    transition: "opacity 0.5s ease, transform 0.5s ease",
-                }}
-            >
-                {children}
-                {!hideContact && <ContactSection />}
-                <FooterSection />
-            </div>
+            {/* Konten tidak lagi disembunyikan dengan opacity: preloader sudah menutupinya,
+                jadi konten (dan LCP) tidak perlu menunggu transisi fade tambahan. */}
+            {children}
+            {!hideContact && <ContactSection />}
+            <FooterSection />
         </>
+    );
+}
+
+export default function ViewerWrapper({ children }: { children: React.ReactNode }) {
+    return (
+        <PreloaderProvider>
+            <ViewerContent>{children}</ViewerContent>
+        </PreloaderProvider>
     );
 }

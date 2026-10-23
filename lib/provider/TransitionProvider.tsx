@@ -10,6 +10,7 @@ type Props = {
 
 const TransitionProvider = ({ children }: Props) => {
     const transitionOverlayRef = useRef<HTMLDivElement | null>(null)
+    const fillRef = useRef<HTMLDivElement | null>(null)
     const svgPathRef = useRef<SVGPathElement | null>(null)
 
     useEffect(() => {
@@ -32,42 +33,58 @@ const TransitionProvider = ({ children }: Props) => {
         <TransitionRouter
             auto
             leave={(next) => {
-                if (!transitionOverlayRef.current || !svgPathRef.current) return
+                if (!transitionOverlayRef.current || !svgPathRef.current) {
+                    next()
+                    return
+                }
 
                 const tl = gsap.timeline()
 
                 tl.to(transitionOverlayRef.current, {
                     opacity: 1,
-                    duration: .5,
+                    duration: .35,
                     ease: "power2.inOut",
                 })
                     .to(svgPathRef.current, {
                         drawSVG: "100%",
                         strokeWidth: 300,
-                        duration: 1.5,
+                        duration: 1,
                         ease: "power2.inOut",
                     }, 0)
+                    .to(fillRef.current, {
+                        opacity: 1,
+                        duration: .4,
+                        ease: "power1.in",
+                    }, 0.55)
                     .call(() => next())
 
                 return () => tl.kill()
             }}
 
             enter={(next) => {
-                if (!transitionOverlayRef.current || !svgPathRef.current) return
+                if (!transitionOverlayRef.current || !svgPathRef.current) {
+                    next()
+                    return
+                }
 
                 const tl = gsap.timeline()
 
-                tl.to(svgPathRef.current, {
-                    drawSVG: "100% 100%",
-                    strokeWidth: 2,
-                    duration: 1.5,
-                    ease: "power2.inOut",
+                tl.to(fillRef.current, {
+                    opacity: 0,
+                    duration: .3,
+                    ease: "power1.out",
                 })
+                    .to(svgPathRef.current, {
+                        drawSVG: "100% 100%",
+                        strokeWidth: 2,
+                        duration: 1,
+                        ease: "power2.inOut",
+                    }, 0)
                     .to(transitionOverlayRef.current, {
                         opacity: 0,
-                        duration: .5,
+                        duration: .35,
                         ease: "power2.inOut",
-                    }, 1)
+                    }, 0.65)
                     .set(svgPathRef.current, {
                         drawSVG: "0%",
                         strokeWidth: 2,
@@ -79,15 +96,19 @@ const TransitionProvider = ({ children }: Props) => {
         >
             <div
                 ref={transitionOverlayRef}
-                className='fixed inset-0 pointer-events-none z-[999] flex items-center justify-center opacity-0'
+                className='fixed inset-0 pointer-events-none z-[999] flex items-center justify-center opacity-0 will-change-[opacity]'
             >
+                <div
+                    ref={fillRef}
+                    className='absolute inset-0 bg-[#2b00ff] opacity-0'
+                />
                 <svg
                     width="100%"
                     height="100%"
                     viewBox="0 0 1316 664"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-full scale-125 h-full"
+                    className="relative w-full scale-125 h-full"
                     preserveAspectRatio="xMidYMid slice"
                 >
                     <path

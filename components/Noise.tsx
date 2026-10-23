@@ -1,12 +1,13 @@
 "use client"
 import { NoiseProps } from '@/lib/types';
-import React, { useEffect, useRef, } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap, prefersReducedMotion } from '@/lib/gsap';
+
+const CANVAS_SIZE = 1024;
+const MARGIN = 96;
 
 const Noise: React.FC<NoiseProps> = ({
-  patternSize = 250,
-  patternScaleX = 1,
-  patternScaleY = 1,
-  patternRefreshInterval = 2,
+  patternRefreshInterval = 6,
   patternAlpha = 15
 }) => {
   const grainRef = useRef<HTMLCanvasElement | null>(null);
@@ -18,59 +19,53 @@ const Noise: React.FC<NoiseProps> = ({
     const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
-    let frame = 0;
-    let animationId: number;
+    canvas.width = CANVAS_SIZE;
+    canvas.height = CANVAS_SIZE;
 
-    const canvasSize = 1024;
+    const imageData = ctx.createImageData(CANVAS_SIZE, CANVAS_SIZE);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const value = Math.random() * 255;
+      data[i] = value;
+      data[i + 1] = value;
+      data[i + 2] = value;
+      data[i + 3] = patternAlpha;
+    }
+    ctx.putImageData(imageData, 0, 0);
 
-    const resize = () => {
-      if (!canvas) return;
-      canvas.width = canvasSize;
-      canvas.height = canvasSize;
+    if (prefersReducedMotion()) return;
 
-      canvas.style.width = '100vw';
-      canvas.style.height = '100vh';
+    const interval = Math.max(1, patternRefreshInterval) / 60;
+    const setX = gsap.quickSetter(canvas, 'x', 'px') as (v: number) => void;
+    const setY = gsap.quickSetter(canvas, 'y', 'px') as (v: number) => void;
+    const setScaleX = gsap.quickSetter(canvas, 'scaleX') as (v: number) => void;
+    const setScaleY = gsap.quickSetter(canvas, 'scaleY') as (v: number) => void;
+
+    let last = 0;
+    const tick = (time: number) => {
+      if (time - last < interval) return;
+      last = time;
+      setX(gsap.utils.random(-MARGIN, MARGIN, 1));
+      setY(gsap.utils.random(-MARGIN, MARGIN, 1));
+      setScaleX(Math.random() > 0.5 ? 1 : -1);
+      setScaleY(Math.random() > 0.5 ? 1 : -1);
     };
 
-    const drawGrain = () => {
-      const imageData = ctx.createImageData(canvasSize, canvasSize);
-      const data = imageData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        const value = Math.random() * 255;
-        data[i] = value;
-        data[i + 1] = value;
-        data[i + 2] = value;
-        data[i + 3] = patternAlpha;
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-    };
-
-    const loop = () => {
-      if (frame % patternRefreshInterval === 0) {
-        drawGrain();
-      }
-      frame++;
-      animationId = window.requestAnimationFrame(loop);
-    };
-
-    window.addEventListener('resize', resize);
-    resize();
-    loop();
-
-    return () => {
-      window.removeEventListener('resize', resize);
-      window.cancelAnimationFrame(animationId);
-    };
-  }, [patternSize, patternScaleX, patternScaleY, patternRefreshInterval, patternAlpha]);
+    gsap.ticker.add(tick);
+    return () => gsap.ticker.remove(tick);
+  }, [patternRefreshInterval, patternAlpha]);
 
   return (
     <canvas
-      className="pointer-events-none absolute top-0 left-0 h-screen w-screen"
       ref={grainRef}
+      aria-hidden="true"
+      className="pointer-events-none absolute will-change-transform"
       style={{
-        imageRendering: 'pixelated'
+        top: -MARGIN,
+        left: -MARGIN,
+        width: `calc(100% + ${MARGIN * 2}px)`,
+        height: `calc(100% + ${MARGIN * 2}px)`,
+        imageRendering: 'pixelated',
       }}
     />
   );

@@ -1,18 +1,19 @@
 'use client'
 import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { useGSAP, batchReveal } from "@/lib/gsap"
 import FlipLink from "../ui/FlipLink"
 import Dropdown from "../ui/Dropdown"
 import { Experience } from "@/lib/schema/experience-schema";
 
 const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
-    const ref = useRef(null)
-    const inView = useInView(ref, { once: true, margin: "-100px" })
+    const ref = useRef<HTMLElement>(null)
+
+    useGSAP(() => {
+        batchReveal("[data-reveal]", { y: 20, duration: 0.7, stagger: 0.1 })
+    }, { scope: ref, dependencies: [experiences.length] })
 
     return (
         <section ref={ref} className="flex flex-col gap-14 my-24 px-8 w-full max-w-6xl mx-auto">
-
-            {/* Header */}
             <div className="flex items-baseline gap-1.5">
                 <FlipLink href="#" lineHeight={0.85} className="text-primary text-3xl">
                     Experience
@@ -22,15 +23,12 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
 
             <div className="flex flex-col">
                 {experiences.map((data, idx) => (
-                    <motion.div
+                    <div
                         key={idx}
+                        data-reveal
                         className="grid border-t border-border/40 py-10 last:border-b last:border-border/40 gap-8 group"
                         style={{ gridTemplateColumns: "1fr 2fr" }}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={inView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, ease: "easeOut", delay: idx * 0.1 }}
                     >
-                        {/* meta */}
                         <div className="flex flex-col gap-2 pt-1">
                             <span className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground/40 font-medium">
                                 {data.date}
@@ -40,7 +38,6 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
                             </span>
                         </div>
 
-                        {/* content */}
                         <div className="flex flex-col gap-4">
                             <h2 className="text-lg font-semibold text-primary leading-snug">
                                 {data.role}
@@ -49,7 +46,6 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
                                 {data.description}
                             </p>
 
-                            {/* Tags*/}
                             {data.techStack && (
                                 <div className="flex gap-2 flex-wrap pt-2">
                                     {data.techStack.map((tech: string, i: number) => (
@@ -64,11 +60,10 @@ const ExperienceSection = ({ experiences }: { experiences: Experience[] }) => {
                             )}
                         </div>
 
-                    </motion.div>
+                    </div>
                 ))}
             </div>
 
-            {/* CTA */}
             <Dropdown
                 title="Get Resume"
                 options={[

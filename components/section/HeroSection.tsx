@@ -1,7 +1,9 @@
 "use client";
+import { useRef } from "react";
 import { HeroSectionPros } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { motion, Variants } from "framer-motion";
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { usePreloader } from "@/lib/provider/PreloaderProvider";
 
 const HeroSection = ({
     subtitle = "SUBTITLE",
@@ -9,90 +11,93 @@ const HeroSection = ({
     subline = "SUBLINE",
     className,
 }: HeroSectionPros) => {
+    const sectionRef = useRef<HTMLElement>(null);
+    const titleRef = useRef<HTMLHeadingElement>(null);
+    const { ready } = usePreloader();
     const nameParts = title.split(" ");
 
-    const PRELOADER_DURATION = 2.8
+    useGSAP(() => {
+        if (prefersReducedMotion()) return;
+        gsap.set("[data-hero-letter]", { yPercent: 110 });
+        gsap.set("[data-hero-fade]", { opacity: 0, y: 20 });
+    }, { scope: sectionRef });
 
-    const slideUp: Variants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
+    useGSAP(() => {
+        if (!ready || prefersReducedMotion()) return;
+
+        const tl = gsap.timeline({ delay: 0.05 });
+        tl.to("[data-hero-letter]", {
+            yPercent: 0,
+            duration: 0.9,
+            ease: "power4.out",
+            stagger: 0.04,
+            clearProps: "transform",
+        }, 0).to("[data-hero-fade]", {
             opacity: 1,
-            transition: {
-                delay: PRELOADER_DURATION + 0.2,
-                duration: 0.6,
-                ease: "easeOut",
-            },
-        },
-    };
-
-    const letterAnimation: Variants = {
-        hidden: { y: "110%" },
-        visible: (i: number) => ({
             y: 0,
-            transition: {
-                delay: PRELOADER_DURATION + 0.1 + i * 0.04,
-                duration: 0.7,
-                ease: [0.76, 0, 0.24, 1],
-            },
-        }),
-    };
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: 0.12,
+            clearProps: "opacity,transform",
+        }, 0.35);
+    }, { scope: sectionRef, dependencies: [ready] });
+
+    useGSAP(() => {
+        const mm = gsap.matchMedia();
+        mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+            gsap.to(titleRef.current, {
+                yPercent: -12,
+                opacity: 0.15,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: sectionRef.current,
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true,
+                },
+            });
+        });
+    }, { scope: sectionRef });
 
     return (
         <section
+            ref={sectionRef}
             className={cn(
                 "flex flex-col justify-center items-center h-screen w-full overflow-hidden",
                 className
             )}
         >
-            <motion.p
-                className="font-bold text-muted-foreground"
-                variants={slideUp}
-                initial="hidden"
-                animate="visible"
-            >
+            <p data-hero-fade className="font-bold text-muted-foreground">
                 {subtitle}
-            </motion.p>
+            </p>
 
-            <motion.h1
+            <h1
+                ref={titleRef}
                 className="flex flex-col text-primary text-center font-big-shoulders font-[900] leading-none tracking-[-5.2px]"
-                initial="hidden"
-                animate="visible"
                 aria-label={title}
             >
-                {nameParts.map((part, wordIndex) => {
-                    const offset = nameParts
-                        .slice(0, wordIndex)
-                        .reduce((total, word) => total + word.length, 0);
+                {nameParts.map((part, wordIndex) => (
+                    <span
+                        key={wordIndex}
+                        aria-hidden="true"
+                        className="text-8xl md:text-9xl lg:text-[10rem] xl:text-[14rem] overflow-hidden"
+                    >
+                        {part.split("").map((char, charIndex) => (
+                            <span
+                                key={charIndex}
+                                data-hero-letter
+                                className="inline-block"
+                            >
+                                {char}
+                            </span>
+                        ))}
+                    </span>
+                ))}
+            </h1>
 
-                    return (
-                        <span
-                            key={wordIndex}
-                            className="text-8xl md:text-9xl lg:text-[10rem] xl:text-[14rem] overflow-hidden"
-                        >
-                            {part.split("").map((char, charIndex) => (
-                                <motion.span
-                                    key={charIndex}
-                                    custom={offset + charIndex}
-                                    variants={letterAnimation}
-                                    className="inline-block"
-                                >
-                                    {char}
-                                </motion.span>
-                            ))}
-                        </span>
-                    );
-                })}
-            </motion.h1>
-
-            <motion.p
-                className="font-bold text-muted-foreground"
-                variants={slideUp}
-                initial="hidden"
-                animate="visible"
-            >
+            <p data-hero-fade className="font-bold text-muted-foreground">
                 {subline}
-            </motion.p>
+            </p>
         </section>
     );
 };

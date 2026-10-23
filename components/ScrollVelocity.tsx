@@ -1,177 +1,182 @@
 'use client'
-import React, { useRef, useLayoutEffect, useState } from 'react';
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  useMotionValue,
-  useVelocity,
-  useAnimationFrame
-} from 'motion/react';
+import React, { useRef } from 'react';
+import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { Sparkle } from './ui/Sparkle';
-import { ScrollVelocityProps, VelocityTextProps } from '@/lib/types';
+import { ScrollVelocityProps } from '@/lib/types';
 
-function useElementWidth<T extends HTMLElement>(ref: React.RefObject<T | null>): number {
-  const [width, setWidth] = useState(0);
+type VelocityTextProps = {
+  texts: string[];
+  baseVelocity: number;
+  className: string;
+  numCopies: number;
+  parallaxClassName?: string;
+  scrollerClassName?: string;
+  parallaxStyle?: React.CSSProperties;
+  scrollerStyle?: React.CSSProperties;
+  separatorSvg: React.ReactNode;
+};
 
-  useLayoutEffect(() => {
-    function updateWidth() {
-      if (ref.current) {
-        setWidth(ref.current.offsetWidth);
-      }
-    }
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
-  }, [ref]);
+const BOOST_PER_VELOCITY = 1 / 200;
+const MAX_BOOST = 8;
 
-  return width;
-}
+const wrap = (min: number, max: number, v: number) => {
+  const range = max - min;
+  return ((((v - min) % range) + range) % range) + min;
+};
 
-// Default SVG separator
-const DefaultSeparatorSvg = () => (
-  <Sparkle size={48} className='translate-y-2'/>
-);
-
-export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
-  scrollContainerRef,
-  texts = [],
-  velocity = 100,
-  className = '',
-  damping = 50,
-  stiffness = 400,
-  numCopies = 6,
-  velocityMapping = { input: [0, 1000], output: [0, 5] },
+function VelocityText({
+  texts,
+  baseVelocity,
+  className,
+  numCopies,
   parallaxClassName,
   scrollerClassName,
   parallaxStyle,
   scrollerStyle,
-  separatorSvg = <DefaultSeparatorSvg />
-}) => {
-  function VelocityText({
-    baseVelocity = velocity,
-    scrollContainerRef,
-    className = '',
-    damping,
-    stiffness,
-    numCopies,
-    velocityMapping,
-    parallaxClassName,
-    scrollerClassName,
-    parallaxStyle,
-    scrollerStyle
-  }: VelocityTextProps) {
-    const baseX = useMotionValue(0);
-    const scrollOptions = scrollContainerRef ? { container: scrollContainerRef } : {};
-    const { scrollY } = useScroll(scrollOptions);
-    const scrollVelocity = useVelocity(scrollY);
-    const smoothVelocity = useSpring(scrollVelocity, {
-      damping: damping ?? 50,
-      stiffness: stiffness ?? 400
+  separatorSvg,
+}: VelocityTextProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const copyRef = useRef<HTMLSpanElement>(null);
+
+  useGSAP(() => {
+    const wrapper = wrapperRef.current;
+    const scroller = scrollerRef.current;
+    const copy = copyRef.current;
+    if (!wrapper || !scroller || !copy) return;
+
+    const mm = gsap.matchMedia();
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const setX = gsap.quickSetter(scroller, 'x', 'px') as (v: number) => void;
+
+      let copyWidth = copy.offsetWidth;
+      let x = 0;
+      let direction = 1;
+      let boost = 0;
+      let targetBoost = 0;
+      let running = false;
+
+      const tick = (_time: number, deltaTime: number) => {
+        if (!copyWidth) return;
+        const dt = Math.min(deltaTime, 50) / 1000;
+
+        targetBoost *= Math.exp(-dt * 8);
+        boost += (targetBoost - boost) * (1 - Math.exp(-dt * 6));
+
+        x = wrap(-copyWidth, 0, x + direction * baseVelocity * dt * (1 + boost));
+        setX(x);
+      };
+
+      const start = () => {
+        if (running) return;
+        running = true;
+        gsap.ticker.add(tick);
+      };
+      const stop = () => {
+        if (!running) return;
+        running = false;
+        gsap.ticker.remove(tick);
+      };
+
+      const trigger = ScrollTrigger.create({
+        trigger: wrapper,
+        start: 'top bottom',
+        end: 'bottom top',
+        onToggle: (self) => (self.isActive ? start() : stop()),
+        onUpdate: (self) => {
+          if (self.direction !== 0) direction = self.direction;
+          targetBoost = Math.min(Math.abs(self.getVelocity()) * BOOST_PER_VELOCITY, MAX_BOOST);
+        },
+      });
+      if (trigger.isActive) start();
+
+      const observer = new ResizeObserver(() => {
+        copyWidth = copy.offsetWidth;
+      });
+      observer.observe(copy);
+
+      return () => {
+        stop();
+        observer.disconnect();
+        trigger.kill();
+      };
     });
-    const velocityFactor = useTransform(
-      smoothVelocity,
-      velocityMapping?.input || [0, 1000],
-      velocityMapping?.output || [0, 5],
-      { clamp: false }
+  }, { scope: wrapperRef });
+
+  const contentWithSeparators: React.ReactNode[] = [];
+  for (let i = 0; i < texts.length; i++) {
+    contentWithSeparators.push(
+      <span key={`text-${i}`} className={className}>
+        {texts[i]}
+      </span>
     );
 
-    const copyRef = useRef<HTMLSpanElement>(null);
-    const copyWidth = useElementWidth(copyRef);
-
-    function wrap(min: number, max: number, v: number): number {
-      const range = max - min;
-      const mod = (((v - min) % range) + range) % range;
-      return mod + min;
-    }
-
-    const x = useTransform(baseX, v => {
-      if (copyWidth === 0) return '0px';
-      return `${wrap(-copyWidth, 0, v)}px`;
-    });
-
-    const directionFactor = useRef<number>(1);
-    useAnimationFrame((t, delta) => {
-      let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
-
-      if (velocityFactor.get() < 0) {
-        directionFactor.current = -1;
-      } else if (velocityFactor.get() > 0) {
-        directionFactor.current = 1;
-      }
-
-      moveBy += directionFactor.current * moveBy * velocityFactor.get();
-      baseX.set(baseX.get() + moveBy);
-    });
-
-    // Create content with separators
-    const contentWithSeparators = [];
-    for (let i = 0; i < texts.length; i++) {
+    if (i < texts.length - 1) {
       contentWithSeparators.push(
-        <span key={`text-${i}`} className={`${className}`}>
-          {texts[i]}
-        </span>
-      );
-
-      // Add separator after each text except the last one
-      if (i < texts.length - 1) {
-        contentWithSeparators.push(
-          <span key={`separator-${i}`} className="flex-shrink-0">
-            {separatorSvg}
-          </span>
-        );
-      }
-    }
-
-    const spans = [];
-    for (let i = 0; i < numCopies!; i++) {
-      spans.push(
-        <span
-          className="flex-shrink-0 flex items-center"
-          key={i}
-          ref={i === 0 ? copyRef : null}
-        >
-          {contentWithSeparators}
-          {/* Add separator at the end to connect with next copy */}
-          <span className="flex-shrink-0">
-            {separatorSvg}
-          </span>
+        <span key={`separator-${i}`} className="flex-shrink-0">
+          {separatorSvg}
         </span>
       );
     }
+  }
 
-    return (
-      <div className={`${parallaxClassName} relative overflow-hidden`} style={parallaxStyle}>
-        <motion.div
-          className={`${scrollerClassName} flex whitespace-nowrap items-center text-center font-sans text-4xl font-bold tracking-[-0.02em] drop-shadow md:text-[5rem] md:leading-[5rem]`}
-          style={{ x, ...scrollerStyle }}
-        >
-          {spans}
-        </motion.div>
-      </div>
+  const spans: React.ReactNode[] = [];
+  for (let i = 0; i < numCopies; i++) {
+    spans.push(
+      <span
+        className="flex-shrink-0 flex items-center"
+        key={i}
+        ref={i === 0 ? copyRef : null}
+      >
+        {contentWithSeparators}
+        <span className="flex-shrink-0">{separatorSvg}</span>
+      </span>
     );
   }
 
   return (
-    <section>
-      <VelocityText
-        className={className}
-        baseVelocity={velocity}
-        scrollContainerRef={scrollContainerRef}
-        damping={damping}
-        stiffness={stiffness}
-        numCopies={numCopies}
-        velocityMapping={velocityMapping}
-        parallaxClassName={parallaxClassName}
-        scrollerClassName={scrollerClassName}
-        parallaxStyle={parallaxStyle}
-        scrollerStyle={scrollerStyle}
+    <div
+      ref={wrapperRef}
+      className={`${parallaxClassName ?? ''} relative overflow-hidden`}
+      style={parallaxStyle}
+    >
+      <div
+        ref={scrollerRef}
+        className={`${scrollerClassName ?? ''} flex whitespace-nowrap items-center text-center font-sans text-4xl font-bold tracking-[-0.02em] drop-shadow will-change-transform md:text-[5rem] md:leading-[5rem]`}
+        style={scrollerStyle}
       >
-        {texts}
-      </VelocityText>
-    </section>
+        {spans}
+      </div>
+    </div>
   );
-};
+}
+
+const DefaultSeparatorSvg = () => <Sparkle size={48} className="translate-y-2" />;
+
+export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
+  texts = [],
+  velocity = 100,
+  className = '',
+  numCopies = 6,
+  parallaxClassName,
+  scrollerClassName,
+  parallaxStyle,
+  scrollerStyle,
+  separatorSvg = <DefaultSeparatorSvg />,
+}) => (
+  <section>
+    <VelocityText
+      texts={texts}
+      baseVelocity={velocity}
+      className={className}
+      numCopies={numCopies}
+      parallaxClassName={parallaxClassName}
+      scrollerClassName={scrollerClassName}
+      parallaxStyle={parallaxStyle}
+      scrollerStyle={scrollerStyle}
+      separatorSvg={separatorSvg}
+    />
+  </section>
+);
 
 export default ScrollVelocity;

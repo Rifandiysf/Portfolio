@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { gsap, ScrollTrigger, useGSAP, batchReveal, prefersReducedMotion } from "@/lib/gsap"
 import ScrollVelocity from "../ScrollVelocity"
 import FlipLink from "../ui/FlipLink"
 import Link from "next/link"
@@ -13,14 +13,38 @@ const techStack = [
 ]
 
 const AboutSection = () => {
-    const ref = useRef(null)
-    const inView = useInView(ref, { once: true, margin: "-100px" })
+    const ref = useRef<HTMLElement>(null)
+
+    useGSAP(() => {
+        batchReveal("[data-reveal]", { y: 24, stagger: 0.12 })
+
+        if (prefersReducedMotion()) return
+        gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
+            const end = Number(el.dataset.count)
+            const suffix = el.dataset.suffix ?? ""
+            const counter = { value: 0 }
+            el.textContent = `0${suffix}`
+
+            ScrollTrigger.create({
+                trigger: el,
+                start: "top 90%",
+                once: true,
+                onEnter: () =>
+                    gsap.to(counter, {
+                        value: end,
+                        duration: 1.2,
+                        ease: "power2.out",
+                        onUpdate: () => {
+                            el.textContent = `${Math.round(counter.value)}${suffix}`
+                        },
+                    }),
+            })
+        })
+    }, { scope: ref })
 
     return (
         <>
             <section ref={ref} className="flex flex-col gap-14 my-24 px-8 w-full max-w-6xl mx-auto">
-
-                {/* Header */}
                 <div className="flex items-baseline gap-1.5">
                     <FlipLink href="/about" lineHeight={0.85} className="text-primary text-3xl">
                         About
@@ -29,25 +53,16 @@ const AboutSection = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-16 items-start max-sm:grid-cols-1 max-sm:gap-10">
-                    {/* tagline */}
-                    <motion.p
+                    <p
+                        data-reveal
                         className="font-medium text-xl leading-relaxed text-muted-foreground"
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={inView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.7, ease: "easeOut" }}
                     >
                         Fresh graduate passionate about the intersection of{" "}
                         <span className="text-primary font-semibold">creativity & technology</span>
                         {" "}— crafting engaging, user-friendly digital experiences that work and feel good.
-                    </motion.p>
+                    </p>
 
-                    {/* bio and links */}
-                    <motion.div
-                        className="flex flex-col gap-6"
-                        initial={{ opacity: 0, y: 24 }}
-                        animate={inView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.12 }}
-                    >
+                    <div data-reveal className="flex flex-col gap-6">
                         <p className="text-base leading-[1.85] text-muted-foreground">
                             Recently graduated from a vocational high school in Software Development.
                             I&apos;ve already shipped real projects — from a real-time counseling system
@@ -72,27 +87,28 @@ const AboutSection = () => {
                                 ]}
                             />
                         </div>
-                    </motion.div>
+                    </div>
                 </div >
 
-                <motion.div
+                <div
+                    data-reveal
                     className="grid grid-cols-3 gap-0 border-t border-border/40 pt-10 max-sm:grid-cols-1"
-                    initial={{ opacity: 0, y: 20 }
-                    }
-                    animate={inView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.24 }}
                 >
                     {
                         [
-                            { num: "5+", label: "Projects Shipped" },
-                            { num: "1+", label: "Years Development Experience" },
-                            { num: "6+", label: "Tech Stack Experience" },
+                            { num: "5+", count: 5, suffix: "+", label: "Projects Shipped" },
+                            { num: "1+", count: 1, suffix: "+", label: "Years Development Experience" },
+                            { num: "6+", count: 6, suffix: "+", label: "Tech Stack Experience" },
                         ].map((stat, i) => (
                             <div
                                 key={i}
                                 className="flex flex-col gap-1 pr-10 max-sm:py-6 max-sm:border-b max-sm:border-border/40 max-sm:pr-0 last:max-sm:border-0"
                             >
-                                <span className="font-big-shoulders font-[900] text-4xl text-primary tracking-tight">
+                                <span
+                                    data-count={stat.count}
+                                    data-suffix={stat.suffix}
+                                    className="font-big-shoulders font-[900] text-4xl text-primary tracking-tight tabular-nums"
+                                >
                                     {stat.num}
                                 </span>
                                 <span className="text-[12px] uppercase tracking-[0.1em] text-muted-foreground/60 font-medium">
@@ -101,10 +117,9 @@ const AboutSection = () => {
                             </div>
                         ))
                     }
-                </motion.div>
+                </div>
             </section >
 
-            {/* Scroll velocity */}
             < ScrollVelocity
                 texts={techStack}
                 velocity={50}

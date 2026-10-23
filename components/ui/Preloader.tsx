@@ -1,8 +1,9 @@
 'use client'
-import { useEffect, useRef, useState } from "react"
-import gsap from "gsap"
+import { useRef } from "react"
+import { gsap, useGSAP, prefersReducedMotion } from "@/lib/gsap"
 
 type Props = {
+    onReveal: () => void
     onComplete: () => void
 }
 
@@ -18,96 +19,72 @@ const greetings = [
     { text: "Halo", lang: "Indonesia" },
 ]
 
-const Preloader = ({ onComplete }: Props) => {
+const PROGRESS_DURATION = 1.6
+
+const Preloader = ({ onReveal, onComplete }: Props) => {
     const overlayRef = useRef<HTMLDivElement>(null)
     const counterRef = useRef<HTMLSpanElement>(null)
     const barRef = useRef<HTMLDivElement>(null)
     const greetingRef = useRef<HTMLDivElement>(null)
     const langRef = useRef<HTMLSpanElement>(null)
-    const [index, setIndex] = useState(0)
 
-    useEffect(() => {
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline({ onComplete })
+    const callbacks = useRef({ onReveal, onComplete })
+    callbacks.current = { onReveal, onComplete }
 
-            // Counter + bar (1.8s)
-            tl.to(counterRef.current, {
-                duration: 1.8,
-                ease: "power2.inOut",
-                innerText: 100,
-                snap: { innerText: 1 },
-                onUpdate() {
-                    if (counterRef.current) {
-                        counterRef.current.textContent =
-                            Math.round(Number(counterRef.current.textContent)) + "%"
-                    }
-                },
-            })
+    useGSAP(() => {
+        if (prefersReducedMotion()) {
+            callbacks.current.onReveal()
+            callbacks.current.onComplete()
+            return
+        }
 
-            tl.to(barRef.current, {
-                width: "100%",
-                duration: 1.8,
-                ease: "power2.inOut",
-            }, "<")
+        const counter = counterRef.current
+        const greeting = greetingRef.current
+        const lang = langRef.current
+        if (!counter || !greeting || !lang) return
 
-            // Slide up overlay keluar
-            tl.to(overlayRef.current, {
-                yPercent: -100,
-                duration: 0.9,
-                ease: "power4.inOut",
-                delay: 0.3,
-            })
-        })
+        const tl = gsap.timeline({ onComplete: () => callbacks.current.onComplete() })
 
-        return () => ctx.revert()
-    }, [onComplete])
+        const progress = { value: 0 }
+        tl.to(progress, {
+            value: 100,
+            duration: PROGRESS_DURATION,
+            ease: "power2.inOut",
+            onUpdate: () => {
+                counter.textContent = `${Math.round(progress.value)}%`
+            },
+        }, 0)
+        tl.fromTo(barRef.current, { scaleX: 0 }, {
+            scaleX: 1,
+            duration: PROGRESS_DURATION,
+            ease: "power2.inOut",
+        }, 0)
 
-    // Cycle greetings setiap 200ms — flip animasi per kata
-    useEffect(() => {
-        let i = 0
-        const INTERVAL = 200
-
-        const cycle = () => {
-            const el = greetingRef.current
-            const lang = langRef.current
-            if (!el || !lang) return
-
-            // Slide current keluar ke atas
-            gsap.to(el, {
-                y: -24,
-                opacity: 0,
-                duration: 0.15,
-                ease: "power2.in",
-                onComplete: () => {
-                    i = (i + 1) % greetings.length
-                    setIndex(i)
-                    el.textContent = greetings[i].text
+        const step = PROGRESS_DURATION / greetings.length
+        for (let i = 1; i < greetings.length; i++) {
+            const at = i * step
+            tl.to(greeting, { y: -24, opacity: 0, duration: 0.07, ease: "power2.in" }, at)
+                .call(() => {
+                    greeting.textContent = greetings[i].text
                     lang.textContent = greetings[i].lang
-                    // Slide masuk dari bawah
-                    gsap.fromTo(el,
-                        { y: 24, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 0.18, ease: "power2.out" }
-                    )
-                },
-            })
+                }, undefined, at + 0.07)
+                .fromTo(greeting,
+                    { y: 24, opacity: 0 },
+                    { y: 0, opacity: 1, duration: 0.1, ease: "power2.out" },
+                    at + 0.07
+                )
         }
 
-        const timer = setInterval(cycle, INTERVAL)
-        // Stop setelah semua greeting tampil + sedikit buffer
-        const stop = setTimeout(() => clearInterval(timer), INTERVAL * greetings.length + 400)
-
-        return () => {
-            clearInterval(timer)
-            clearTimeout(stop)
-        }
-    }, [])
+        tl.addLabel("exit", PROGRESS_DURATION + 0.15)
+        tl.to(overlayRef.current, { yPercent: -100, duration: 0.8, ease: "power4.inOut" }, "exit")
+        tl.call(() => callbacks.current.onReveal(), undefined, "exit+=0.35")
+    }, { scope: overlayRef })
 
     return (
         <div
             ref={overlayRef}
-            className="fixed inset-0 z-[9999] bg-background flex flex-col justify-between px-8 py-10"
+            className="fixed inset-0 z-[9999] bg-background flex flex-col justify-between px-8 py-10 will-change-transform"
         >
-            {/* Top */}
             <div className="flex justify-between items-center">
                 <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground/50 font-medium">
                     Portfolio
@@ -117,10 +94,7 @@ const Preloader = ({ onComplete }: Props) => {
                 </span>
             </div>
 
-            {/* Center — cycling greetings */}
             <div className="flex flex-col items-start gap-3 overflow-hidden">
-
-                {/* Language label */}
                 <span
                     ref={langRef}
                     className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground/40 font-medium"
@@ -128,7 +102,6 @@ const Preloader = ({ onComplete }: Props) => {
                     {greetings[0].lang}
                 </span>
 
-                {/* Greeting word */}
                 <div className="overflow-hidden">
                     <div
                         ref={greetingRef}
@@ -139,13 +112,11 @@ const Preloader = ({ onComplete }: Props) => {
                     </div>
                 </div>
 
-                {/* Subline tetap */}
                 <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground/30 font-medium mt-1">
                     Junior Frontend Developer · Bandung, Indonesia
                 </span>
             </div>
 
-            {/* Bottom — counter + bar */}
             <div className="flex flex-col gap-3">
                 <span
                     ref={counterRef}
@@ -156,8 +127,8 @@ const Preloader = ({ onComplete }: Props) => {
                 <div className="w-full h-[1px] bg-border/40 relative overflow-hidden rounded-full">
                     <div
                         ref={barRef}
-                        className="absolute left-0 top-0 h-full bg-primary"
-                        style={{ width: "0%" }}
+                        className="absolute inset-0 bg-primary origin-left"
+                        style={{ transform: "scaleX(0)" }}
                     />
                 </div>
             </div>

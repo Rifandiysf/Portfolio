@@ -57,8 +57,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${manrope.variable} ${bigShoulders.variable} antialiased relative min-h-screen`}
       >
         <script
@@ -66,12 +67,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none">
+        <section className="fixed inset-0 w-full h-full z-[60] pointer-events-none overflow-hidden">
           <Noise
             patternSize={250}
             patternScaleX={1}
             patternScaleY={1}
-            patternRefreshInterval={2}
+            patternRefreshInterval={6}
             patternAlpha={15}
           />
         </section>
